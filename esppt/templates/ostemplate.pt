@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    metal:define-macro="layout">
+    <head>
+        <meta charset="utf-8">
+        <title>openSIPKD</title>
+        <link rel="shortcut icon" href="${request.static_url('esppt:static/pyramid-16x16.png')}">
+        
+        <!-- Load JQuery Libraries -->
+        <script src="${request.static_url('esppt:static/jquery/jquery-1.10.2.js')}"></script>
+        
+        <!-- Load Bootstrap Libraries -->
+        <link href="${request.static_url('esppt:static/bootstrap/css/bootstrap.css')}" rel="stylesheet">
+        <link href="${request.static_url('esppt:static/bootstrap/css/bootstrap-theme.min.css')}" rel="stylesheet">
+        <script src="${request.static_url('esppt:static/bootstrap/js/bootstrap.min.js')}"></script>
+        
+        <link href="${request.static_url('esppt:static/welcome.css')}" rel="stylesheet">
+        
+        <style>
+            .container{
+                width: 970px !important;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div class="top">
+            <div class="container">
+                <div class="row">
+                
+                    <div class="col-xs-6 hidden-xs">
+                        <img src="${request.static_url('esppt:static/images/logo.png')}" alt="logo" style="height:80px;">  
+                    </div>
+                    <div class="col-xs-6 visible-xs">
+                        <img src="${request.static_url('esppt:static/images/logo2.png')}" alt="logo2" style="width:150px;">  
+                    </div>
+                    
+                    <div class="col-xs-6">
+                        <div tal:switch="datas['logged']">
+                            <div class="user-id" tal:case="0">
+                                <a href="./login" class="btn btn-login btn-primary btn-lg pull-right" role="button"><span class="glyphicon glyphicon-lock"></span> Login</a>
+                            </div>
+                            <div class="user-id" tal:case="1">
+                                <a href="./logout" class="btn btn-login btn-logout btn-primary btn-lg pull-right hidden-xs" role="button"><span class="glyphicon glyphicon-user"></span> ${datas['user']['nm']} (${datas['user']['id']}) <span class="label label-success">Logout</span></a>
+                                <a href="./logout" class="btn btn-login btn-primary btn-lg pull-right visible-xs" role="button"><span class="glyphicon glyphicon-user"></span> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <!-- <p>${datas['title']}</p> -->
+            <div class="info">Merupakan seperangkat aplikasi terpadu yang dipergunakan sebagai alat bantu untuk meningkatkan efektifitas implementasi berbagai regulasi bidang pengelolaan keuangan daerah yang didasarkan pada asas efisiensi, ekonomis, efektif, transparan, akuntabel dan auditabel. (copas dari dokumen sipkd :p)</div>
+            <span class="label label-warning"></span>
+
+            <div metal:define-slot="content"></div>
+            
+            <!--div class="col-sm-4" tal:repeat="row rows">
+                <a class="btn btn-menu btn-primary btn-lg" role="button" href="/{row.kode}?app={row.kode}" >
+                    <span class="glyphicon {row.img}"></span> {row.nama}
+                </a>
+            </div-->
+        </div>
+
+        <h3>&nbsp;</h3>
+        
+        <footer>
+            <div class="container" style="position:fixed; bottom:0;">
+                <p class="muted credit"><strong><a href="http://opensipkd.com">&copy; OpenSIPKD 2014 </a></strong></p>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+.metro .tile-area-dark {
+    min-width: 100%;
+    height: 100%;
+    background-color: #BC2131 !important;
+}
+
+/* dataTables Customize */
+table.dataTable tr.even.row_selected td {
+	background-color: #B0BED9;
+}
+table.dataTable tr.odd.row_selected td {
+	background-color: #9FAFD1;
+}
+
+
+.form-horizontal .controls {
+	margin-left: 120px;  /* changed from 180px to 140px */
+}
+.form-horizontal .control-group {
+    margin-bottom: 1px;
+}
+.form-horizontal .control-label{
+	text-align:left;
+	width: 120px; /* changed from 160px to 120px */
+}

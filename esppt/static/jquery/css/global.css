@@ -1,0 +1,142 @@
+/* bootstrap customize */
+@media (min-width: 979px) {
+	.wekeke{
+		 margin-top: -2px !important;
+		 width:100%;
+		 position:fixed;
+	}
+	.navbar-inner {
+		 --border: 1px !important;
+		 border-radius: 0px !important;
+	}
+}
+
+.content {
+	padding-top: 45px;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    height: 12px;
+}
+.input-append .add-on, .input-prepend .add-on {
+    height: 14px;
+}
+.dropdown-menu {
+	border-radius: 2px !important;
+}
+.nav-tabs {
+	margin-bottom: 6px;
+}
+
+input {
+	height: 14px !important;
+	--border-radius: 2px 2px 2px 2px !important;
+	margin-bottom: 2px !important;
+}
+select {
+	height: 24px !important;
+	padding: 2px !important;
+	--border-radius: 2px 2px 2px 2px !important;
+	margin-bottom: 1px !important;
+}
+button {
+	height: 24px !important;
+	padding: 4px 8px !important;
+	border-radius: 2px 2px 2px 2px !important;
+	margin-bottom: 1px !important;
+}
+a.btn {
+	height: 14px !important;
+	padding: 4px 8px !important;
+	border-radius: 2px 2px 2px 2px !important;
+	margin-bottom: 1px !important;
+}
+input[type="radio"], input[type="checkbox"] {
+    margin: 0px 0px 0px;
+    line-height: normal;
+}
+hr { margin: 4px 0px; }
+.form-horizontal input  {
+	height: 14px !important;
+	--border-radius: 2px 2px 2px 2px !important;
+	margin-bottom: 1px !important;
+}
+.form-horizontal select  {
+	height: 24px !important;
+	padding: 2px !important;
+	--border-radius: 2px 2px 2px 2px !important;
+	margin-bottom: 1px !important;
+}
+
+
+
+
+/* Jquery 1.8.4 --------------------- */
+.ui-corner-all { 
+	border-radius: 0px; 
+	-moz-border-radius-bottomright: 0px; 
+	-moz-border-radius-bottomleft: 0px; 
+	-moz-border-radius-topright: 0px; 
+	-moz-border-radius-topleft: 0px;
+}
+.ui-widget {
+    font-family: Arial,sans-serif,Verdana;
+    font-size: 11px;
+}
+--.ui-helper-hidden-accessible { top: -99999999px; } 
+--.ui-helper-clearfix { display:none; }
+#ui-datepicker-div { display:none; }
+.ui-corner-bl { border-bottom-left-radius: 0px; }
+.ui-corner-tl { border-top-left-radius: 0px; }
+.ui-corner-br { border-bottom-right-radius: 0px; }
+.ui-corner-tr { border-top-right-radius: 0px; }
+.ui-buttonset { margin-right: 1px; }  /* mentogin pagination ke kanan */
+
+
+
+/*
+
+td.right  { text-align: right }
+td.center { text-align: center }
+
+table.dataTable {
+	border: 1px #B3B3B3 solid;	
+}
+
+.dataTables_length {
+	width: 120px;
+}
+
+.dataTables_length select{
+	width: 60px !important;
+}
+.dataTables_filter {
+	width: 280px;
+}
+.dataTables_processing {
+    top: 50%;
+    border: 0;
+	background: none;
+}
+*/
+table.dataTable thead th {
+/*    border-bottom: 1px #B3B3B3 solid;*/
+}
+.dataTable {
+	/*margin-bottom: 8px;*/
+	font-size: 10px;
+}
+
+
+
+/* Flatten das boostrap */
+.well, .navbar-inner, .popover, .btn, .tooltip, input, select, textarea, pre, .progress, .modal, .add-on, .alert, .table-bordered, .nav>.active>a, .dropdown-menu, .tooltip-inner, .badge, .label, .img-polaroid {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+	border-radius: 0px !important;
+	border-collapse: collapse !important;
+	background-image: none !important;
+}

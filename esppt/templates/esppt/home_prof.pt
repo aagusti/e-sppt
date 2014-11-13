@@ -1,0 +1,118 @@
+<html metal:use-macro="load: ../apptemplate.pt">
+<div metal:fill-slot="content">
+ <script type='text/javascript'>
+  $(document).ready(function () {
+      $("#btn_save").click(function () {
+          $.ajax({
+              type: "POST",
+              url: "/reg/prof_save",
+              data: $("#myform").serialize(),
+              success: function (html) {
+                  if (html.success == true) {
+                      $("#errors").css('display', 'inline', 'important');
+                      $("#errors").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                  } else {
+                      $("#errors").css('display', 'inline', 'important');
+                      $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
+                  }
+              },
+              beforeSend: function () {
+                  $("#errors").css('display', 'inline', 'important');
+                  $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+              }
+          });
+          return false;
+      });
+
+      $("#tgl_bayar").datepicker({dateFormat:'dd-mm-yy'});
+  });
+  </script>
+      <h3>Update Profile e-SPPT</h3>
+  
+  <div class="panel-heading block">
+      <h3>Identitas</h3>
+  </div>
+  <div class="panel-body">
+      <form method="post" accept-charset="utf-8" id="myform" class="form-horizontal" enctype="multipart/form-data">
+          <fieldset>
+              <input class="form-control"  type="hidden" name="id" id="id" value="${rows and rows.id}">
+              <div class="form-group">
+                  <label for="kode" class="control-label col-xs-1">NIK</label>
+                  <div class="col-sm-3">
+                      <input class="form-control"  type="text" name="kode" id="kode" value="${rows and rows.kode}">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="nama" class="control-label col-xs-1">Nama</label>
+                  <div class="col-sm-3">
+                      <input class="form-control"  type="text" name="nama" id="nama" value="${rows and rows.nama}">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="alamat1" class="control-label col-xs-1">Alamat</label>
+                  <div class="col-sm-3">
+                      <input class="form-control"  type="text" name="alamat1" id="alamat1" value="${rows and rows.alamat1}">
+                  </div>
+              </div>                    
+              <div class="form-group">
+                  <label for="alamat2" class="control-label col-xs-1"></label>
+                  <div class="col-sm-3">
+                      <input class="form-control"  type="text" name="alamat2" id="alamat2" value="${rows and rows.alamat2}">
+                  </div>
+              </div>                    
+              <div class="form-group">
+                  <label for="kelurahan" class="control-label col-xs-1">Kelurahan</label>
+                  <div class="col-sm-3">
+                      <input class="form-control"  type="text" name="kelurahan" id="kelurahan" value="${rows and rows.kelurahan}">
+                  </div>
+              </div>                    
+              <div class="form-group">
+                  <label for="kecamatan" class="control-label col-xs-1">Kecamatan</label>
+                  <div class="col-sm-3">
+                      <input class="form-control"  type="text" name="kecamatan" id="kecamatan" value="${rows and rows.kecamatan}">
+                  </div>
+              </div>                    
+              <div class="form-group">
+                  <label for="kabupaten" class="control-label col-xs-1">Kabupaten/Kota</label>
+                  <div class="col-sm-3">
+                      <input class="form-control" type="text" name="kabupaten" id="kabupaten" value="${rows and rows.kabupaten}">
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <label for="propinsi" class="control-label col-xs-1">Propinsi</label>
+                  <div class="col-sm-3">
+                      <input class="form-control" type="text" name="propinsi" id="propinsi" value="${rows and rows.propinsi}">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="no_hp" class="control-label col-xs-1">No. Handphone</label>
+                  <div class="col-sm-3">
+                      <input class="form-control" type="text" name="no_hp" id="no_hp" value="${rows and rows.no_hp}">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="email" class="control-label col-xs-1">e-mail</label>
+                  <div class="col-sm-3">
+                      <input class="form-control" type="text" name="email" id="email" value="${rows and rows.email}">
+                  </div>
+              </div>              <div class="form-group">
+                  <label for="password1" class="control-label col-xs-1">Password</label>
+                  <div class="col-xs-1">
+                      <input class="form-control"  type="text" name="password1" id="password1" value="${rows and rows.password}">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="password2" class="control-label col-xs-1">Konfirmasi</label>
+                  <div class="col-xs-1">
+                      <input class="form-control"  type="text" name="password2" id="password2" value="${rows and rows.password}">
+                  </div>
+              </div>
+          </fieldset>
+      </form>
+  </div>
+
+</div>
+
+</html>
+

@@ -192,6 +192,12 @@ class esRegModel(BaseModelDB, Base):
         self.password     = data['password']
         
     @classmethod
+    def get_by_nik(cls, nik):
+        return DBSession.query(cls).filter(
+                  cls.kode == nik
+                ).first()
+            
+                
     def get_by_nik_email(cls, nik, email):
         return DBSession.query(cls).filter(
                   cls.kode == nik,

@@ -30,6 +30,7 @@ def get_logged(request):
     return r or ''
     
 class espptRegister(BaseViews):
+    
     @view_config(route_name='es_reg', renderer='../templates/esppt/register.pt')
     def esregister(self):
         self.datas['title']="Selamat Datang"
@@ -40,6 +41,7 @@ class espptRegister(BaseViews):
     
     @view_config(route_name='es_reg_act', renderer='json')
     def es_register_act(self):
+        ses = self.session
         req = self.request
         params = req.params
         url_dict = req.matchdict
@@ -109,12 +111,13 @@ class espptRegister(BaseViews):
                 p['disabled']='1'
             p['tgl_bayar']  = p and p['tgl_bayar'] and \
                      datetime.strptime(p['tgl_bayar'], '%d-%m-%Y') or None
-            p['updated']    = datetime.now
             p['update_uid'] = self.session['user_id']
+            p['created']    = datetime.now
+            p['create_uid'] = self.session['user_id']
             
             #CEK APAKAH DATA SPPT ADA???
             q = spptModel.get_by_nop_thn(p['nop'], p['tahun'])
-            q = q.first()
+            #q = q.first()
             if not q or q.nm_wp_sppt.strip() != p['nm_wp'].strip():
                 self.d['msg']='NAMA tidak sesuai'
                 return self.d
@@ -127,34 +130,42 @@ class espptRegister(BaseViews):
                 return self.d
                 
             #Simpan data Registrasi
-            p['es_reg_id']=p['id']
-            p['id']=0
+            q = esRegModel.get_by_nik(ses['userid'])
+            if not q:
+                return self.d
+            p['es_reg_id'] = q.id
+            p['nama']=q.nama
+            if 'id' in p: 
+                del p['id']
+            
             rows = esNopModel.tambah(p)
-            self.d['msg']='Sukses Simpan Data'
-            self.d['success']=True                    
+            if rows:
+                self.d['msg']='Sukses Simpan Data'
+                self.d['success']=True                    
             return self.d
             
         elif url_dict['act']=='prof_save':
             p = params.copy()
-            p['nop'] = re.sub("[^0-9]", "", p['nop'])
-            if not p['password1'] or not p['password2'] or p['password1']!=p['password2'] :
-                self.d['msg']='Password tidak sama atau kosong'
+            if  p['password1']!=p['password2'] :
+                self.d['msg']='Password tidak sama'
                 return self.d
-                
-            p['password']=p['password1']
+            if  p['password1']:   
+                p['password']=p['password1']
             if 'disabled' not in p:
                 p['disabled']='0'
             else:
                 p['disabled']='1'
-            p['tgl_bayar']  = p and p['tgl_bayar'] and \
-                     datetime.strptime(p['tgl_bayar'], '%d-%m-%Y') or None
             p['updated']    = datetime.now
             p['update_uid'] = self.session['user_id']
+            if 'password1' in p:
+                del p['password1']
+            if 'password2' in p:
+                del p['password2']
                 
             #Simpan data Registrasi
-            rows = esRegModel.update(p)
-            self.d['msg']='Sukses Simpan Data'
-            self.d['success']=True                    
+            if esRegModel.update(p):
+                self.d['msg']='Sukses Simpan Data'
+                self.d['success']=True
             return self.d
             
         else:
@@ -229,10 +240,10 @@ class eslogin(BaseViews):
         self.session['sa'] =  None
         #['logged']=0
         #session['app']   =None
-        #session['userid']=None
+        session['userid']=None
         headers          = forget(self.request)
         self.datas['logged']=0;
-        url = self.request.resource_url(self.context, '/')
+        url = self.request.resource_url(self.context, '')
         return HTTPFound(location=url, headers=headers)
 
 class esHome(BaseViews):
@@ -259,12 +270,15 @@ class esHome(BaseViews):
         params = req.params
         url_dict = req.matchdict 
         if url_dict['id'] and url_dict['id'].isdigit():
-            pass
-        else:
+            rows = DBSession.query(esRegModel).filter(
+                    esRegModel.kode==ses['userid']
+                ).first()
             return dict(datas=self.datas,
-                    rows = '', 
+                    rows = rows, 
                     sess=self.session)
-                    
+        else:
+            HTTPNotFound()            
+
     
     @view_config(route_name='es_home_act', renderer='json')
     def es_home_act(self):
@@ -305,7 +319,7 @@ class esHome(BaseViews):
             
             rowTable = DataTables(req, spptModel, query, columns)
             return rowTable.output_result()
-                
+                 
         elif url_dict['act'] == 'delete':
             id = 'id' in params and params['id'] or ""
             if id:

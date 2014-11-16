@@ -84,6 +84,10 @@
             window.location = '/esppt/nop/0';
         });
 
+        $('#btn_profile').click(function () {
+            window.location = '/esppt/prof/0';
+        });
+        
         $('#btn_delete').click(function () {
             if (mID) {
                 var hapus = confirm('Hapus data ini?');

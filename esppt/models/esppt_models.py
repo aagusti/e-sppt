@@ -7,6 +7,54 @@ class spptModel(Base):
     __tablename__  = 'sppt'
     __table_args__ = {'extend_existing':True,'schema' : 'public', 
                       'autoload':True}
+    kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
+    kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
+    kd_kecamatan             = Column(String(3) , nullable=False, primary_key=True)                      
+    kd_kelurahan             = Column(String(3) , nullable=False, primary_key=True)                      
+    kd_blok                  = Column(String(3) , nullable=False, primary_key=True)                      
+    no_urut                  = Column(String(4) , nullable=False, primary_key=True)                      
+    kd_jns_op                = Column(String(1) , nullable=False, primary_key=True)                      
+    thn_pajak_sppt           = Column(String(4) , nullable=False, primary_key=True)                      
+    siklus_sppt              = Column(Integer , nullable=False)                      
+    kd_kanwil_bank           = Column(String(2),)                      
+    kd_kppbb_bank            = Column(String(2),)                      
+    kd_bank_tunggal          = Column(String(2),)                      
+    kd_bank_persepsi         = Column(String(2),)                      
+    kd_tp                    = Column(String(2) , nullable=False)                      
+    nm_wp_sppt               = Column(String(30) , nullable=False)                      
+    jln_wp_sppt              = Column(String(30) , nullable=False)                      
+    blok_kav_no_wp_sppt      = Column(String(15),)                      
+    rw_wp_sppt               = Column(String(2),)                      
+    rt_wp_sppt               = Column(String(3),)                      
+    kelurahan_wp_sppt        = Column(String(30),)                      
+    kota_wp_sppt             = Column(String(30),)                      
+    kd_pos_wp_sppt           = Column(String(5),)                      
+    npwp_sppt                = Column(String(15),)                      
+    no_persil_sppt           = Column(String(5),)                      
+    kd_kls_tanah             = Column(String(3), nullable=False , default='XXX' )                      
+    thn_awal_kls_tanah       = Column(String(4), nullable=False , default='1986' )                      
+    kd_kls_bng               = Column(String(3), nullable=False , default='XXX' )                      
+    thn_awal_kls_bng         = Column(String(4), nullable=False , default='1986' )                      
+    tgl_jatuh_tempo_sppt     = Column(Date , nullable=False)                      
+    luas_bumi_sppt           = Column(BigInteger, nullable=False)                      
+    luas_bng_sppt            = Column(BigInteger, nullable=False)                      
+    njop_bumi_sppt           = Column(BigInteger, nullable=False)                      
+    njop_bng_sppt            = Column(BigInteger, nullable=False)                      
+    njop_sppt                = Column(BigInteger, nullable=False)                      
+    njoptkp_sppt             = Column(Integer , nullable=False)                      
+    njkp_sppt                = Column(Integer,)                      
+    pbb_terhutang_sppt       = Column(BigInteger , nullable=False)                      
+    faktor_pengurang_sppt    = Column(BigInteger,)                      
+    pbb_yg_harus_dibayar_sppt= Column(BigInteger , nullable=False)                      
+    status_pembayaran_sppt   = Column(String(1) ,nullable=False, default='0' )                      
+    status_tagihan_sppt      = Column(String(1) ,nullable=False, default='0' )                      
+    status_cetak_sppt        = Column(String(1) ,nullable=False, default='0' )                      
+    tgl_terbit_sppt          = Column(Date, nullable=False)                      
+    tgl_cetak_sppt           = Column(DateTime, nullable=False)                      
+    nip_pencetak_sppt        = Column(String(18), nullable=False)                      
+    kd_kanwil                = Column(String(2))                      
+    kd_kantor                = Column(String(2))                      
+                      
     @classmethod
     def get_by_nop_thn(cls, nop, thn):
         return DBSession.query(cls).filter(
@@ -62,6 +110,25 @@ class pspptModel(Base):
     __tablename__  = 'pembayaran_sppt'
     __table_args__ = {'extend_existing':True,'schema' : 'public', 
                       'autoload':True}
+    kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
+    kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
+    kd_kecamatan             = Column(String(3) , nullable=False, primary_key=True)                      
+    kd_kelurahan             = Column(String(3) , nullable=False, primary_key=True)                      
+    kd_blok                  = Column(String(3) , nullable=False, primary_key=True)                      
+    no_urut                  = Column(String(4) , nullable=False, primary_key=True)                      
+    kd_jns_op                = Column(String(1) , nullable=False, primary_key=True)                      
+    thn_pajak_sppt           = Column(String(4) , nullable=False, primary_key=True)                      
+    pembayaran_sppt_ke       = Column(Integer, nullable=False, primary_key=True)
+    kd_kanwil                = Column(String(2))                      
+    kd_kantor                = Column(String(2))   
+    kd_tp                    = Column(String(2))
+    denda_sppt               = Column(BigInteger)
+    jml_sppt_yg_dibayar      = Column(BigInteger)
+    tgl_pembayaran_sppt      = Column(Date)
+    tgl_rekam_byr_sppt       = Column(DateTime)
+    nip_rekam_byr_sppt       = Column(String(18))
+    #user_id integer,                      
+                      
     @classmethod
     def get_by_nop_thn(cls, nop, thn):
         return DBSession.query(cls).filter(

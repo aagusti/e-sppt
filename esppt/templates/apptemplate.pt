@@ -58,7 +58,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/${datas['app']}"><span class="glyphicon glyphicon-home"></span> esppt</a>
+                <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-home"></span>&nbsp;</a>
+                <a class="navbar-brand active" href="/${datas['app']}"><span class="glyphicon glyphicon-pencil"></span> Registrasi</a>
+                <a class="navbar-brand" href="/esppt"><span class="glyphicon glyphicon-bookmark"></span> Dashboard</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse">

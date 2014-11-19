@@ -27,49 +27,52 @@
       $("#tgl_bayar").datepicker({dateFormat:'dd-mm-yy'});
   });
   </script>
-   <div>
-      <form method="post" accept-charset="utf-8" id="myform" class="form-horizontal" enctype="multipart/form-data">
-          <fieldset>
-            <div class="panel-heading">
-                <h3>Tambah NOP e-SPPT</h3>
-            </div>
-            <div class="panel-body">              
-              <div class="form-group">
-                  <label for="nop" class="control-label col-xs-1">NOP</label>
-                  <div class="col-sm-3">
-                      <input class="form-control" type="text" name="nop" id="nop" value="${rows and rows.nop}">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="tahun" class="control-label col-xs-1">Tahun</label>
-                  <div class="col-sm-3">
-                      <input class="form-control"  type="text" name="tahun" id="tahun" value="${rows and rows.tahun}">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="nm_wp" class="control-label col-xs-1">Nama WP</label>
-                  <div class="col-sm-3">
-                      <input class="form-control"  type="text" name="nm_wp" id="nm_wp" value="${rows and rows.nm_wp}">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="tgl_bayar" class="control-label col-xs-1">Tgl. Bayar</label>
-                  <div class="col-xs-1">
-                      <input class="form-control"  type="text" name="tgl_bayar" id="tgl_bayar" value="${rows and rows.tgl_bayar}">
-                  </div>
-              </div>
-            </div>
-
-              <div class="form-group">
-                  <label class="control-label col-xs-1">&nbsp;</label>
-                  <div class="col-sm-4">
-                      <button type="button" class="btn btn-primary" id="btn_save" name="btn_save">Register</button>
-                      <button type="reset" class="btn btn-info" id="btn_cancel">Batal</button>
-                  </div>
-              </div>
-          </fieldset>
-      </form>
-  </div>
+    <div class="panel-body">
+        <div class="page-header">
+            <h1>Tambah NOP e-SPPT</h1>
+        </div>
+        
+        <div class="row">
+            <form method="post" accept-charset="utf-8" id="myform" class="form-horizontal" enctype="multipart/form-data">
+                <fieldset>
+                    <!--div class="panel-heading">
+                        <h3>Tambah NOP e-SPPT</h3>
+                    </div-->
+                    <div class="form-group">
+                        <label for="nop" class="control-label col-xs-2">NOP</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" type="text" name="nop" id="nop" value="${rows and rows.nop}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tahun" class="control-label col-xs-2">Tahun</label>
+                        <div class="col-xs-4">
+                            <input class="form-control"  type="text" name="tahun" id="tahun" value="${rows and rows.tahun}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nm_wp" class="control-label col-xs-2">Nama WP</label>
+                        <div class="col-xs-4">
+                            <input class="form-control"  type="text" name="nm_wp" id="nm_wp" value="${rows and rows.nm_wp}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tgl_bayar" class="control-label col-xs-2">Tgl. Bayar</label>
+                        <div class="col-xs-4">
+                            <input class="form-control" style="width:80px;" type="text" name="tgl_bayar" id="tgl_bayar" value="${rows and rows.tgl_bayar}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-2">&nbsp;</label>
+                        <div class="col-xs-4">
+                            <button type="button" class="btn btn-primary" id="btn_save" name="btn_save">Register</button>
+                            <button type="reset" class="btn btn-info" id="btn_cancel">Batal</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 
 </div>
 

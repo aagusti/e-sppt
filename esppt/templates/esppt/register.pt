@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title">DENTITAS PEMILIK/PEMANFAAT/PENGELOLA OBJEK PAJAK  PBB</h3>
+                                <h3 class="panel-title">IDENTITAS PEMILIK/PEMANFAAT/PENGELOLA OBJEK PAJAK PBB</h3>
                             </div>
                             <div class="panel-body">
                                 <!--div class="form-group">
@@ -126,7 +126,6 @@
                                     <div class="col-xs-8">
                                         <label for="password2" class="control-label text-danger">** Data di Isi sesuai dengan yang tertera pada KTP</label>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>

@@ -50,19 +50,19 @@
                                 </div--->
                                 
                                 <div class="form-group">
-                                    <label for="kode" class="control-label col-xs-4">NIK</label>
+                                    <label for="kode" class="control-label col-xs-4">NIK **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control"  type="text" name="kode" id="kode" value="${rows and rows.kode}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nama" class="control-label col-xs-4">Nama</label>
+                                    <label for="nama" class="control-label col-xs-4">Nama **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control"  type="text" name="nama" id="nama" value="${rows and rows.nama}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="alamat1" class="control-label col-xs-4">Alamat</label>
+                                    <label for="alamat1" class="control-label col-xs-4">Alamat **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control"  type="text" name="alamat1" id="alamat1" value="${rows and rows.alamat1}">
                                     </div>
@@ -74,25 +74,25 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kelurahan" class="control-label col-xs-4">Kelurahan</label>
+                                    <label for="kelurahan" class="control-label col-xs-4">Kelurahan **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control"  type="text" name="kelurahan" id="kelurahan" value="${rows and rows.kelurahan}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kecamatan" class="control-label col-xs-4">Kecamatan</label>
+                                    <label for="kecamatan" class="control-label col-xs-4">Kecamatan **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control"  type="text" name="kecamatan" id="kecamatan" value="${rows and rows.kecamatan}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="kabupaten" class="control-label col-xs-4">Kabupaten/Kota</label>
+                                    <label for="kabupaten" class="control-label col-xs-4">Kabupaten/Kota **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control" type="text" name="kabupaten" id="kabupaten" value="${rows and rows.kabupaten}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="propinsi" class="control-label col-xs-4">Propinsi</label>
+                                    <label for="propinsi" class="control-label col-xs-4">Propinsi **</label>
                                     <div class="col-xs-8">
                                         <input class="form-control" type="text" name="propinsi" id="propinsi" value="${rows and rows.propinsi}">
                                     </div>

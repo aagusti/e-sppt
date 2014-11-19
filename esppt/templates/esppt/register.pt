@@ -40,7 +40,7 @@
                     <div class="col-md-6">
                         <div class="panel panel-primary">
                             <div class="panel-heading">
-                                <h3 class="panel-title">IDENTITAS</h3>
+                                <h3 class="panel-title">DENTITAS PEMILIK/PEMANFAAT/PENGELOLA OBJEK PAJAK  PBB</h3>
                             </div>
                             <div class="panel-body">
                                 <!--div class="form-group">
@@ -112,14 +112,21 @@
                                 <div class="form-group">
                                     <label for="password1" class="control-label col-xs-4">Password</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control"  type="password" name="password1" id="password1" value="${rows and rows.password}">
+                                        <input class="form-control"  type="password" name="password1" id="password1" value="${rows and rows.password}" placeholder="Password e-SPPT PBB dengan minimal 6 karakter">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="password2" class="control-label col-xs-4">Konfirmasi</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control"  type="password" name="password2" id="password2" value="${rows and rows.password}">
+                                        <input class="form-control"  type="password" name="password2" id="password2" value="${rows and rows.password}" placeholder="Masukan kembali password e-SPPT PBB">
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password2" class="control-label col-xs-4">&nbsp;</label>
+                                    <div class="col-xs-8">
+                                        <label for="password2" class="control-label text-danger">** Data di Isi sesuai dengan yang tertera pada KTP</label>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -142,25 +149,25 @@
                                 <div class="form-group">
                                     <label for="nop" class="control-label col-xs-4">NOP</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="text" name="nop" id="nop" value="${rows and rows.nop}">
+                                        <input class="form-control" type="text" name="nop" id="nop" value="${rows and rows.nop}" placeholder="Isi sesuai dengan penulisan pada SPPT PBB">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="tahun" class="control-label col-xs-4">Tahun</label>
+                                    <label for="nm_wp" class="control-label col-xs-4">Nama Wajib Pajak</label>
                                     <div class="col-xs-8">
-                                        <input class="form-control"  type="text" name="tahun" id="tahun" value="${rows and rows.tahun}">
+                                        <input class="form-control"  type="text" name="nm_wp" id="nm_wp" value="${rows and rows.nm_wp}" placeholder="Isi sesuai dengan penulisan pada SPPT PBB">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="nm_wp" class="control-label col-xs-4">Nama WP</label>
-                                    <div class="col-xs-8">
-                                        <input class="form-control"  type="text" name="nm_wp" id="nm_wp" value="${rows and rows.nm_wp}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="tgl_bayar" class="control-label col-xs-4">Tgl. Bayar</label>
+                                    <label for="tgl_bayar" class="control-label col-xs-4">Tgl. Pembayaran PBB Terakhir </label>
                                     <div class="col-xs-8" style="width:110px !important;">
                                         <input class="form-control"  type="text" name="tgl_bayar" id="tgl_bayar" value="${rows and rows.tgl_bayar}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tahun" class="control-label col-xs-4">Tahun SPPT</label>
+                                    <div class="col-xs-8" style="width:80px !important;">
+                                        <input class="form-control"  type="text" name="tahun" id="tahun" value="${rows and rows.tahun}">
                                     </div>
                                 </div>
                                 

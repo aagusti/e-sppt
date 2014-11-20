@@ -5,9 +5,9 @@ from sqlalchemy.orm import relationship
 
 class spptModel(Base):
     __tablename__  = 'sppt'
-    __table_args__ = {'extend_existing':True,'schema' : 'public', 
+    __table_args__ = {'extend_existing':True,'schema' : 'pbb', 
                       'autoload':True}
-    kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
+    """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
     kd_kecamatan             = Column(String(3) , nullable=False, primary_key=True)                      
     kd_kelurahan             = Column(String(3) , nullable=False, primary_key=True)                      
@@ -54,7 +54,7 @@ class spptModel(Base):
     nip_pencetak_sppt        = Column(String(18), nullable=False)                      
     kd_kanwil                = Column(String(2))                      
     kd_kantor                = Column(String(2))                      
-                      
+    """                  
     @classmethod
     def get_by_nop_thn(cls, nop, thn):
         return DBSession.query(cls).filter(
@@ -108,9 +108,9 @@ class spptModel(Base):
 
 class pspptModel(Base):
     __tablename__  = 'pembayaran_sppt'
-    __table_args__ = {'extend_existing':True,'schema' : 'public', 
+    __table_args__ = {'extend_existing':True,'schema' : 'pbb', 
                       'autoload':True}
-    kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
+    """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
     kd_kecamatan             = Column(String(3) , nullable=False, primary_key=True)                      
     kd_kelurahan             = Column(String(3) , nullable=False, primary_key=True)                      
@@ -128,7 +128,7 @@ class pspptModel(Base):
     tgl_rekam_byr_sppt       = Column(DateTime)
     nip_rekam_byr_sppt       = Column(String(18))
     #user_id integer,                      
-                      
+    """                  
     @classmethod
     def get_by_nop_thn(cls, nop, thn):
         return DBSession.query(cls).filter(

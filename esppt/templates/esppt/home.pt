@@ -21,7 +21,7 @@
         
         $(document).ready(function () {
             oTable = $('#table1').dataTable({
-                "sDom": '<"toolbar">lfrtip',
+                "sDom": '<"toolbar">',
                 "sAjaxSource": oTableUrl,
                 "bServerSide": true,
                 "bProcessing": true,
@@ -78,6 +78,7 @@
 
             var tb = tb_array.join(' ');
             $("div.toolbar").html(tb);
+            $("div.toolbar").attr('style', 'display:block; float: left; margin-bottom:6px; line-height:16px;');
 
             $('#btn_tambah').click(function () {
                 window.location = '/esppt/nop/0';

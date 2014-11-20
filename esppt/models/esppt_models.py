@@ -79,6 +79,7 @@ class spptModel(Base):
                     cls.no_urut        == nop[13:17],
                     cls.kd_jns_op      == nop[17:18]
                )       
+               
     @classmethod           
     def get_sisa_by_nop(cls, nop="13213123"):
         return DBSession.query(cls.thn_pajak_sppt, cls.nm_wp_sppt, 
@@ -197,7 +198,7 @@ class esRegModel(BaseModelDB, Base):
                   cls.kode == nik
                 ).first()
             
-                
+    @classmethod            
     def get_by_nik_email(cls, nik, email):
         return DBSession.query(cls).filter(
                   cls.kode == nik,

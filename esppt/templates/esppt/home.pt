@@ -30,13 +30,13 @@
                 "bInfo": false,
                 "bFilter": false,
                 "bAutoWidth": false,
-                "bPaginate": false,
-                "sPaginationType": "full_numbers",
+                //"bPaginate": false,
+                //"sPaginationType": "full_numbers",
                 
-                "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
-                ],
+                //"lengthMenu": [
+                //    [10, 25, 50, -1],
+                //    [10, 25, 50, "All"]
+                //],
                 //"aoColumnDefs": [],
                 "aoColumns": [
                     null,
@@ -133,12 +133,12 @@
                 "bInfo": false,
                 "bFilter": false,
                 "bAutoWidth": false,
-                "bPaginate": true,
-                "sPaginationType": "full_numbers",
-                "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
-                ],
+                //"bPaginate": false,
+                //"sPaginationType": "full_numbers",
+               // "lengthMenu": [
+                //    [10, 25, 50, -1],
+                //    [10, 25, 50, "All"]
+                //],
                 "aoColumnDefs": [],
                 "aoColumns": [
                     {"sWidth": "40pt"},

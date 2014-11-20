@@ -79,6 +79,7 @@ class spptModel(Base):
                     cls.no_urut        == nop[13:17],
                     cls.kd_jns_op      == nop[17:18]
                )       
+               
     @classmethod           
     def get_sisa_by_nop(cls, nop="13213123"):
         return DBSession.query(cls.thn_pajak_sppt, cls.nm_wp_sppt, 
@@ -102,13 +103,14 @@ class spptModel(Base):
                     cls.kd_kelurahan   == pspptModel.kd_kelurahan,
                     cls.kd_blok        == pspptModel.kd_blok,
                     cls.no_urut        == pspptModel.no_urut,
-                    cls.kd_jns_op      == pspptModel.kd_jns_op
-               ).group_by(cls)                   
+                    cls.kd_jns_op      == pspptModel.kd_jns_op,
+                    cls.thn_pajak_sppt == pspptModel.thn_pajak_sppt
+                    ).group_by(cls)                   
                
 
 class pspptModel(Base):
     __tablename__  = 'pembayaran_sppt'
-    __table_args__ = {'extend_existing':True,'schema' : 'pbb', 
+    __table_args__ = {'extend_existing':True,'schema' : 'public', 
                       'autoload':True}
     """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
@@ -197,7 +199,7 @@ class esRegModel(BaseModelDB, Base):
                   cls.kode == nik
                 ).first()
             
-                
+    @classmethod            
     def get_by_nik_email(cls, nik, email):
         return DBSession.query(cls).filter(
                   cls.kode == nik,

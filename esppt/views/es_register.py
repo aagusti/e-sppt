@@ -73,14 +73,14 @@ class espptRegister(BaseViews):
                 
             #CEK APAKAH DATA SPPT ADA???
             q = spptModel.get_by_nop_thn(p['nop'], p['tahun'])
-            q = q.first()
+            #q = q.first()
             if not q or q.nm_wp_sppt.strip() != p['nm_wp'].strip():
                 self.d['msg']='NAMA tidak sesuai'
                 return self.d
             #CEK PEMBAYARAN
             q = pspptModel.get_by_nop_thn(p['nop'], p['tahun'])
             q = q.first()
-            
+            print '****', q 
             if not q or q.tgl_pembayaran_sppt != p['tgl_bayar'].date():
                 self.d['msg']='Tanggal pembayaran tidak sesuai'
                 return self.d
@@ -98,10 +98,15 @@ class espptRegister(BaseViews):
                 us['created']    = datetime.now
                 us['create_uid'] = self.session['user_id']
                 us['update_uid'] = self.session['user_id']                
-                
+ 
                 rows = userModel.tambah(us)
+                ses['userid'] = p['kode']
+                ses['user_nm'] = p['nama']
+                ses['user_id'] = rows
+                
                 self.d['msg']='Sukses Simpan Data'
                 self.d['success']=True
+            return self.d
         elif url_dict['act']=='nop_save':
             p = params.copy()
             p['nop'] = re.sub("[^0-9]", "", p['nop'])
@@ -249,6 +254,11 @@ class eslogin(BaseViews):
 class esHome(BaseViews):
     @view_config(route_name='es_home', renderer='../templates/esppt/home.pt')
     def es_home(self):
+        ses = self.session
+        if not 'logged' in ses or   not ses['logged']:
+            url = self.request.resource_url(self.context, '')
+            return HTTPFound(location=url, headers=None)
+
         return dict(datas=self.datas,
                     rows = '', 
                     sess=self.session) 
@@ -295,7 +305,10 @@ class esHome(BaseViews):
             columns.append(ColumnDT('kd_blok'))
             columns.append(ColumnDT('no_urut'))
             columns.append(ColumnDT('kd_jns_op'))
-            query = DBSession.query(esNopModel)
+            query = DBSession.query(esNopModel).filter(
+                esNopModel.es_reg_id == esRegModel.get_by_nik(ses['userid']).id
+              )
+            print '******', ses['userid']
             rowTable = DataTables(req, esNopModel, query, columns)
             return rowTable.output_result()
 

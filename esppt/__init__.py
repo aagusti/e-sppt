@@ -7,7 +7,12 @@ from esppt.models.model_base import (
     DBSession,
     Base,
     )
-    
+
+from esppt.models.other_base import (
+    OtherDBSession,
+    OtherBase,
+    )
+
 from esppt_route import esppt_route
 
 def add_route(config, rc):
@@ -20,6 +25,11 @@ def main(global_config, **settings):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
+
+    OtherEngine = engine_from_config(settings, 'othersql.')
+    OtherEngine.echo=True
+    OtherDBSession.configure(bind=OtherEngine)
+    OtherBase.metadata.bind = OtherEngine
     
     os_session_factory = UnencryptedCookieSessionFactoryConfig('itsaseekreet')
     

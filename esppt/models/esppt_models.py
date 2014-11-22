@@ -2,10 +2,10 @@ import sys
 from model_base import *
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-
+                      
 class spptModel(Base):
     __tablename__  = 'sppt'
-    __table_args__ = {'extend_existing':True,'schema' : 'pbb', 
+    __table_args__ = {'extend_existing':True , #'schema' : 'pbb', 
                       'autoload':True}
     """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
@@ -66,7 +66,7 @@ class spptModel(Base):
                     cls.no_urut        == nop[13:17],
                     cls.kd_jns_op      == nop[17:18],
                     cls.thn_pajak_sppt == thn
-               ).first()
+               )
                
     @classmethod           
     def get_by_nop(cls, nop):
@@ -110,7 +110,7 @@ class spptModel(Base):
 
 class pspptModel(Base):
     __tablename__  = 'pembayaran_sppt'
-    __table_args__ = {'extend_existing':True,'schema' : 'public', 
+    __table_args__ = {'extend_existing':True, # ,'schema' : 'public', 
                       'autoload':True}
     """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      

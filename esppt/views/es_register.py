@@ -14,6 +14,8 @@ from esppt.models.model_base import *
 import os
 from pyramid.renderers import render_to_response
 from esppt.models.esppt_models import *
+from esppt.models.imgw_models import *
+  
 import re
    
 def get_logged(request):
@@ -343,3 +345,34 @@ class esHome(BaseViews):
                    self.d['msg']='Sukses Hapus Data'
                    self.d['success']=True
             return self.d
+
+        elif url_dict['act'] == 'sms':
+            id = 'id' in params and params['id'] or ""
+            thn = 'thn' in params and params['thn'] or ""
+            if id:
+                q = esNopModel.get_by_nop(id).first()
+                if not q or q.es_register.kode != ses['userid']:
+                    self.d['msg']='NOP bukan milik anda'
+                    return self.d
+                penerima = q.es_register.no_hp    
+                q = spptModel.get_by_nop_thn(id,thn).first()
+                if q:
+                   #q.delete()
+                   pesan = ''.join(['NOP:', id,' ',thn, ' NAMA:', q.nm_wp_sppt or '', \
+                                ' ALAMAT:',q.jln_wp_sppt or '', q.blok_kav_no_wp_sppt or '', \
+                                ' RT/RW:', q.rt_wp_sppt or '', '/',q.rw_wp_sppt or '', \
+                                ' KELURAHAN:', q.kelurahan_wp_sppt or '', \
+                                ' KOTA:', q.kota_wp_sppt or '', \
+                                ' NJOP:', '{0:,}'.format(q.njop_sppt) or '', \
+                                ' TERUTANG:', '{0:,}'.format(q.pbb_yg_harus_dibayar_sppt)  or ''])
+                   antrian = antrianModel()
+                   antrian.jalur = 1
+                   antrian.penerima=penerima
+                   antrian.pesan=pesan
+                   OtherDBSession.add(antrian)
+                   OtherDBSession.flush()
+                   #OtherDBSession.commit()
+                   self.d['msg']='Sukses Kirim Data '+pesan
+                   self.d['msg']=pesan
+                   self.d['success']=True
+            return self.d            

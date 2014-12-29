@@ -15,7 +15,9 @@ esppt.egg-info/requires.txt
 esppt.egg-info/top_level.txt
 esppt/models/__init__.py
 esppt/models/esppt_models.py
+esppt/models/imgw_models.py
 esppt/models/model_base.py
+esppt/models/other_base.py
 esppt/models/tools.py
 esppt/scripts/__init__.py
 esppt/scripts/initializedb.py

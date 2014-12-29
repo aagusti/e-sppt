@@ -160,7 +160,6 @@ class BaseViews(object):
             return HTTPFound(location='/login?app=%s' % self.app, headers=headers)
     
     def is_sysadmin(self):
-        print 'CCCCCCC', self.session['sa']
         return 'sa' in self.session and self.session['sa'] or False
 
     def is_akses_app(self):

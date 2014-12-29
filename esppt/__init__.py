@@ -27,7 +27,7 @@ def main(global_config, **settings):
     Base.metadata.bind = engine
 
     OtherEngine = engine_from_config(settings, 'othersql.')
-    OtherEngine.echo=True
+    OtherEngine.echo=False
     OtherDBSession.configure(bind=OtherEngine)
     OtherBase.metadata.bind = OtherEngine
     

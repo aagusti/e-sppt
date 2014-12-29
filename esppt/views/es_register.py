@@ -39,8 +39,16 @@ class espptRegister(BaseViews):
         self.datas['judul']='Modules'
         return dict(datas=self.datas,
                     rows = '', 
-                    sess=self.session)   
-    
+                    sess=self.session) 
+                    
+    @view_config(route_name='es_help', renderer='../templates/esppt/help.pt')
+    def esregister(self):
+        self.datas['title']="Pertolongan"
+        self.datas['judul']='Modules'
+        return dict(datas=self.datas,
+                    rows = '', 
+                    sess=self.session)  
+                    
     @view_config(route_name='es_reg_act', renderer='json')
     def es_register_act(self):
         ses = self.session

@@ -30,7 +30,7 @@
     <link href="/static/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
 -->
     <link href="/static/js/pickadate/themes/classic.css" rel="stylesheet">
-    <link href="/static/js/pickadate/themes/classic.date.css" rel="stylesheet"> -->
+    <link href="/static/js/pickadate/themes/classic.date.css" rel="stylesheet">
     <link href="/static/osipkd.css" rel="stylesheet">
     
     <script type="text/javascript" src="/deform_static/scripts/jquery-2.0.3.min.js"></script>

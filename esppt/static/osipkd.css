@@ -126,3 +126,24 @@ div.tab-content {
     
     border-width: 0px 0px 1px;
 }
+
+.picker {
+  font-size: 12px;
+  text-align: left;
+  line-height: 1.2;
+  color: #000000;
+  position: absolute;
+  z-index: 10000;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.picker__select--month, .picker__select--year {
+    border: 1px solid #b7b7b7;
+    height: 2em;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    padding: 0em;
+}

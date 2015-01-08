@@ -190,7 +190,7 @@ class RegSchema(colander.Schema):
 class RegEditSchema(RegAddSchema):
     id = colander.SchemaNode(colander.Integer(),
             missing=colander.drop,
-            #widget=widget.HiddenWidget(readonly=True),
+            widget=widget.HiddenWidget(readonly=True),
             title="")
 
 def get_form(request, class_form):

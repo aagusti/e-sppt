@@ -153,7 +153,7 @@ class userModel(BaseDB, Base):
     nip      = Column(String(18), nullable=False)
     jabatan  = Column(String(50), nullable=False)
     disabled = Column(SmallInteger, nullable=False)
-    def __init__(self,data):
+    """def __init__(self,data):
         BaseDB.__init__(self,data)
         self.userid  = data['userid'] or None
         self.nama    = data['nama'] or None
@@ -161,7 +161,8 @@ class userModel(BaseDB, Base):
         self.nip     = 'nip' in data and data['nip'] or '-'
         self.jabatan = 'jabatan' in data and data['jabatan'] or '-'
         self.disabled = 'disabled' in data and data['disabled'] or 0
-
+    """
+    
     @classmethod
     def get_by_user(cls, uid):
         return DBSession.query(cls).filter(
@@ -181,7 +182,7 @@ class esRegModel(BaseModelDB, Base):
     email           = Column(String(64), nullable=False)
     password        = Column(String(16), nullable=False)    
 
-    def __init__(self, data):
+    """def __init__(self, data):
         BaseModelDB.__init__(self,data)
         self.alamat1      = data['alamat1'] 
         self.alamat2      = data['alamat2']
@@ -192,7 +193,7 @@ class esRegModel(BaseModelDB, Base):
         self.no_hp        = data['no_hp']
         self.email        = data['email']
         self.password     = data['password']
-        
+    """    
     @classmethod
     def get_by_nik(cls, nik):
         return DBSession.query(cls).filter(
@@ -200,11 +201,10 @@ class esRegModel(BaseModelDB, Base):
                 ).first()
             
     @classmethod            
-    def get_by_nik_email(cls, nik, email):
+    def get_by_email(cls, email):
         return DBSession.query(cls).filter(
-                  cls.kode == nik,
                   cls.email == email
-                )
+                ).first()
       
 class esNopModel(BaseDB, Base):
     __tablename__  = 'es_nop'
@@ -221,7 +221,7 @@ class esNopModel(BaseDB, Base):
     es_reg_id           = Column(BigInteger, ForeignKey("esppt.es_register.id"))
     es_register         = relationship("esRegModel", backref="es_nop")
     
-    def __init__(self, data):
+    """def __init__(self, data):
         BaseDB.__init__(self,data)
         self.nama           = data['nama']
         self.kd_propinsi    = data['nop'][:2]
@@ -234,7 +234,8 @@ class esNopModel(BaseDB, Base):
         self.tahun          = data['tahun']
         self.tgl_bayar      = data['tgl_bayar']        
         self.es_reg_id      = data['es_reg_id']        
-
+    """
+    
     def get_nop(cls):
         return "".join([self.kd_propinsi, self.kd_dati2, self.kd_kecamatan,
                         self.kd_kelurahan, self.kd_blok, self.kd_no_urut,

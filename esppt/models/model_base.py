@@ -52,7 +52,7 @@ class BaseDB(object):
     update_uid = Column(Integer)
     create_uid = Column(Integer)
 
-    def __init__(self,data):
+    """def __init__(self,data):
         tipe = str(type('id' in data and data['id']))
         if tipe=="<type 'int'>":
             if int(data['id'])>0:
@@ -65,7 +65,23 @@ class BaseDB(object):
         self.updated = data['updated']
         self.create_uid = data['create_uid']
         self.update_uid = data['update_uid']
+    """
+    def to_dict(self): # Elixir like
+        values = {}
+        for column in self.__table__.columns:
+            values[column.name] = getattr(self, column.name)
+        return values
+        
+    def from_dict(self, values):
+        for column in self.__table__.columns:
+            if column.name in values and values[column.name] and values[column.name]!='None':
+                setattr(self, column.name, values[column.name])
 
+    def as_timezone(self, fieldname):
+        date_ = getattr(self, fieldname)
+        return date_ and as_timezone(date_) or None
+
+        
     @classmethod
     def tambah(cls, datas):
         datas['created'] = datetime.now()
@@ -163,10 +179,10 @@ class BaseDB(object):
 class BaseKodeDB(BaseDB):
     kode = Column(String(50), unique=True, nullable=False)
 
-    def __init__(self,data):
+    """def __init__(self,data):
         BaseDB.__init__(self,data)
         self.kode = data['kode']
-
+    """
     @classmethod
     def get_by_kode(cls, kode):
         return DBSession.query(cls).filter(
@@ -182,10 +198,11 @@ class BaseModelDB(BaseKodeDB):
     nama = Column(String(250), nullable=False)
     disabled = Column(Integer, nullable=False, default=0)
 
-    def __init__(self,data):
+    """def __init__(self,data):
         BaseKodeDB.__init__(self,data)
         self.nama = data['nama']
-
+    """
+    
     @classmethod
     def get_by_nama(cls, nama):
         return DBSession.query(cls).filter(

@@ -1,0 +1,91 @@
+<html metal:use-macro="load: ../apptemplate.pt">
+<div metal:fill-slot="content">
+  <div class="panel-body">
+  <img src="${request.static_url('esppt:static/images/logo.png')}" style="height:80px;" />
+  <div class="row">
+    <form method="post" accept-charset="utf-8" id="deform" class="form-horizontal" 
+          enctype="multipart/form-data"  tal:define="field form">
+      <input type="hidden" name="_charset_">
+      <input type="hidden" value="deform" name="__formid__">
+      
+      <div class="alert alert-danger" tal:condition="field.error">
+        <div class="errorMsgLbl" i18n:translate=""
+          >Terdapat kesalahan pengisian</div>
+        <p class="errorMsg">${field.errormsg}</p>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">IDENTITAS PEMILIK/PEMANFAAT/PENGELOLA OBJEK PAJAK PBB</h3>
+          </div>
+          <div class="panel-body">
+              ${form.start_mapping('regschema')}
+                <div class="form-group"  tal:repeat="field form['regschema']">
+                    <label class="control-label col-md-3">${field.title}</label>
+                    <div class="col-md-8">
+                      ${structure:field.serialize()}
+                      <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                         tal:repeat="error field.error.messages()">
+                         ${error}</p>
+                    </div>
+                </div>
+              ${form.end_mapping('regschema')}
+              <div class="col-xs-8">
+              <label class="control-label text-danger" for="password2">** Data di Isi sesuai dengan yang tertera pada KTP</label>
+              <p> </p>
+              </div>
+          </div>
+        </div>
+      </div>
+                        
+                        
+      <div class="col-md-6">
+          <div class="panel panel-primary">
+              <div class="panel-heading">
+                  <h3 class="panel-title">OBJEK PAJAK</h3>
+              </div>
+              <div class="panel-body">
+              ${form.start_mapping('nopschema')}
+                <div class="form-group"  tal:repeat="field form['nopschema']">
+                    <label class="control-label col-md-3">${field.title}</label>
+                    <div class="col-md-8">
+                      ${structure:field.serialize()}
+                      <p id="error-${field.oid}" class="help-block" tal:condition="field.error"
+                         tal:repeat="error field.error.messages()">
+                         ${error}</p>
+                    </div>
+                </div>
+              ${form.end_mapping('nopschema')}
+              <div class="form-group">
+                  <label class="control-label col-xs-4">&nbsp;</label>
+                  <div class="col-xs-8">
+                      <button type="submit" class="btn btn-primary btn-lg" id="btn_save" name="register">Register</button>
+                      <button type="submit" class="btn btn-info btn-lg" id="btn_cancel" name="batal">Batal</button>
+                  </div>
+              </div>              
+                <div class="form-group">
+                <strong>&nbsp;Ketentuan Umum:</strong>
+                <ol>
+                  <li>Formulir Registrasi ini di gunakan untuk menyampaikan Surat Pemberitahuan Pajak Terhutang (SPPT) PBB melalui Surat Elektronik (e-mail)</li>
+                  <li>Penyampaian SPPT PBB melalui e-mail ini disamakan dengan SPPT PBB yang dicetak massal;</li>
+                  <li>Formulir Registrasi e-SPPT PBB di isi dengan lengkap dan benar;</li>
+                  <li>Formulir registrasi ini diisi oleh wajib pajak atau kuasa wajib pajak dengan dilampirkan kuasa wajib pajak.</li>
+                </ol>
+
+                <strong>&nbsp;Ketentuan Khusus:</strong>
+                <ol>
+                  <li>Kesalahan penulisan pada formulir registrasi yang menyebabkan tidak sampainya e-SPPT PBB dianggap SPPT sudah tersampaikan;</li>
+                  <li>Tanggal Status terkirim pada aplikasi e-SPPT PBB merupakan tanggal dikirimnya SPPT oleh wajib pajak;</li>
+                  <li>Dengan mengisi dan menandatangani Formulir e-SPPT PBB ini kami mengetahui, menyetujui dan bertanggungjawab atas informasi dan ketentuan tersebut</li>
+                <ol>
+                </div>
+              </div>
+                            
+          </div>
+      </div>
+    </form>
+  </div>
+  </div>
+</div>
+</html>

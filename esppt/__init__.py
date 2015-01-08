@@ -46,6 +46,8 @@ def main(global_config, **settings):
     #config.add_renderer('json', JSON(indent=0))    
     
     config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_static_view('deform_static', 'deform:static')
+
     config.add_route('home', '/home')
     config.add_route('login', '/login')
     config.add_route('login_it', '/login_it')

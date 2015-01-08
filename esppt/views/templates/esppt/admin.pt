@@ -1,0 +1,150 @@
+<html metal:use-macro="load: ../apptemplate.pt">
+
+  <div metal:fill-slot="content">
+    <script>
+      var mID;
+      var mThn;
+      var oTable;
+      var iPos;
+      var oTableUrl = "/esppt/admin/act/grid";
+      Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
+        var n = this,
+            decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
+            decSeparator = decSeparator == undefined ? "." : decSeparator,
+            thouSeparator = thouSeparator == undefined ? "," : thouSeparator,
+            sign = n < 0 ? "-" : "",
+            i = parseInt(n = Math.abs(+n || 0).toFixed(decPlaces)) + "",
+            j = (j = i.length) > 3 ? j % 3 : 0;
+        return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
+      };
+
+        
+      $(document).ready(function () {
+        oTable = $('#table1').dataTable({
+          "sDom": '<"toolbar">',
+          "sAjaxSource": oTableUrl,
+          "bServerSide": true,
+          "bProcessing": true,
+          "bScrollCollapse": true,
+          "bSort": true,
+          "bInfo": false,
+          "bFilter": false,
+          "bAutoWidth": false,
+          "bPaginate": true,
+          "sPaginationType": "full_numbers",
+          
+          "lengthMenu": [
+              [10, 25, 50, -1],
+              [10, 25, 50, "All"]
+          ],
+          "aoColumnDefs": [],
+          "aoColumns": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              
+          ]
+        });
+          
+        var tb_array = [
+          '<div class="btn-group pull-left">',
+          '	<button id="btn_delete" class="btn btn btn-danger" type="button">Hapus</button>',
+          '	<button id="btn_profile" name="btn_profile" class="btn btn-primary" type="button">Profile</button>',
+          '	&nbsp;',
+          '</div>',
+        ];
+
+        var tb = tb_array.join(' ');
+        $("div.toolbar").html(tb);
+        $("div.toolbar").attr('style', 'display:block; float: left; margin-bottom:6px; line-height:16px;');
+
+        
+        $('#table1 tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                iPos = oTable.fnGetPosition(this);
+                var aData = oTable.fnGetData(iPos);
+                //mID = aData[0];
+                oTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                mID = aData[0];
+                oTable.$('tr.row_selected').removeClass('row_selected');
+                $(this).addClass('row_selected');
+            }
+        });
+        
+        $('#btn_tambah').click(function () {
+            window.location = '/esppt/nop/add';
+        });
+
+        $('#btn_profile').click(function () {
+            window.location = '/esppt/prof';
+        });
+        
+        $('#btn_delete').click(function () {
+          if (mID) {
+            var hapus = confirm('Hapus data ini?');
+            if (hapus == true) {
+              $.ajax({
+                  type: "POST",
+                  url: "/esppt/admin/act/delete",
+                  data: "id=" + mID,
+                  success: function (html) {
+                      if (html.success == true) {
+                          $("#errors").css('display', 'inline', 'important');
+                          $("#errors").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                          var oTable = $('#table1').dataTable();
+                          oTable.fnDraw();
+                          //TODO: Redraw after delete
+                      } else {
+                          $("#errors").css('display', 'inline', 'important');
+                          $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
+                      }
+                  },
+                  beforeSend: function () {
+                      $("#errors").css('display', 'inline', 'important');
+                      $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                  }
+              });
+                return false;
+              };
+          } else {
+              alert('Silahkan pilih data yang akan dihapus');
+          }
+            });
+        });
+    </script>
+    
+    <div class="panel-body">
+        <div class="page-header">
+            <h1>Daftar Registrasi SPPT</h1>
+        </div>
+        
+        <div class="row">
+              <table id="table1" class="table table-bordered table-hover table-condensed">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>NIK</th>
+                    <th>Nama</th>
+                    <th>Kelurahan</th>
+                    <th>Kecamatan</th>
+                    <th>Kabupaten/Kota</th>
+                    <th>No. Telp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            
+        </div>
+    </div>
+</div>
+
+</html>
+

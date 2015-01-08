@@ -1,0 +1,101 @@
+<html metal:use-macro="load: ../apptemplate.pt">
+    <div metal:fill-slot="content">
+            <div class="panel-heading">
+            <!--h3 class="panel-title">Seting Tahun Anggaran</h3-->
+        </div>
+        <style>
+        .form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+        </style>
+        <script type='text/javascript'>
+            $(document).ready(function () {
+                $("#login").click(function () {
+                    username = $("#userid").val();
+                    password = $("#passwd").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "login_it",
+                        data: "userid=" + username + "&passwd=" + password + "&login=login",
+                        success: function (html) {
+                            if (html.success == true) {
+                                if ($('#app').val() != '') {
+                                    window.location = $('#app').val();
+                                } else {
+                                    window.location = "/esppt";
+                                }
+                            } else {
+                                $("#errors").css('display', 'inline', 'important');
+                                $("#errors").html("<span style='display:block;padding:6px;margin-top:6px;' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> User ID atau Password salah !</span>");
+                            }
+                        },
+                        beforeSend: function () {
+                            $("#errors").css('display', 'inline', 'important');
+                            $("#errors").html("<span style='display:block;padding:6px;margin-top:6px;color:#000;' class='label'><img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading... </span>");
+                        }
+                    });
+                    return false;
+                });
+                $("#back").click(function () {
+                    window.location = "/";
+                    return false;
+                });
+            });
+        </script>
+        
+        <div class="panel-body">
+            <!--div class="page-header">
+                <h1>Login e-SPPT</h1>
+            </div-->
+            
+            <center>
+                <form class="form-signin" role="form" action="#" id="loginfrm">
+                    <h2 class="form-signin-heading">Login e-SPPT</h2>
+                    <input type="hidden" name="app" id="app" value="${datas.app}">
+                    <div class="form-group">
+                        <input type="text" name="userid" id="userid" class="form-control" placeholder="User ID" required autofocus>
+                    </div>
+                    <div class="form-group">
+                    <input type="password" name="passwd" id="passwd" class="form-control" placeholder="Password" required>
+                    </div>
+                    <input type="submit" class="btn btn-lg btn-primary btn-block" name="login" id="login" value="Login">
+                    <input type="button" class="btn btn-lg btn-primary btn-block" name="back" id="back" value="Kembali">
+                    <div id="errors"></div>
+                </form>
+                <h3>&nbsp;</h3>
+            </center>
+            
+        </div>
+    </div>
+</html>

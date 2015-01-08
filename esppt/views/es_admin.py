@@ -66,9 +66,10 @@ class esAdmin(BaseViews):
         elif url_dict['act'] == 'delete':
             id = 'id' in params and params['id'] or ""
             if id:
+                q = esRegModel.query_id(id).delete()
+                DBSession.flush()
+                
                 try:
-                  q = esRegModel.query_id(id).delete()
-                  DBSession.flush()
                   self.d['msg']='Sukses Hapus Data'
                   self.d['success']=True
                 except:

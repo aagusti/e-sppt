@@ -200,7 +200,7 @@
             if (hapus == true) {
                 $.ajax({
                     type: "POST",
-                    url: "/esppt/sms",
+                    url: "/esppt/act/sms",
                     data: "id=" + mID+"&thn="+mThn,
                     success: function (html) {
                       if (html.success == true) {

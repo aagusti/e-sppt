@@ -84,11 +84,11 @@ class spptModel(Base):
     def get_sisa_by_nop(cls, nop="13213123"):
         return DBSession.query(cls.thn_pajak_sppt, cls.nm_wp_sppt, 
                                   cls.pbb_yg_harus_dibayar_sppt,
-                                  func.sum(pspptModel.denda_sppt).label('denda'),
-                                  func.sum(pspptModel.jml_sppt_yg_dibayar).label('bayar'),
+                                  func.sum(func.coalesce(pspptModel.denda_sppt,0)).label('denda'),
+                                  func.sum(func.coalesce(pspptModel.jml_sppt_yg_dibayar,0)).label('bayar'),
                                   (cls.pbb_yg_harus_dibayar_sppt+
-                                  func.sum(pspptModel.denda_sppt)-
-                                  func.sum(pspptModel.jml_sppt_yg_dibayar)).label('sisa')
+                                  func.sum(func.coalesce(pspptModel.denda_sppt,0))-
+                                  func.sum(func.coalesce(pspptModel.jml_sppt_yg_dibayar,0))).label('sisa')
                     ).filter(
                     cls.kd_propinsi    == nop[:2],
                     cls.kd_dati2       == nop[2:4],

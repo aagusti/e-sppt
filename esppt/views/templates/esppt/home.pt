@@ -135,7 +135,7 @@
             "bInfo": false,
             "bFilter": false,
             "bAutoWidth": false,
-            "bPaginate": false,
+            "bPaginate": true,
             "sPaginationType": "full_numbers",
             "lengthMenu": [
                 [25, 50, -1],

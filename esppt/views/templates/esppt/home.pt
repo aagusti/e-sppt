@@ -126,7 +126,7 @@
     <script>
       $(document).ready(function () {
         oTable2 = $('#table2').dataTable({
-            "sDom": '<"toolbar1">',
+            "sDom": '<"toolbar1">lfrtip',
             "sAjaxSource": "/esppt/act/grid2",
             "bServerSide": true,
             "bProcessing": true,
@@ -138,8 +138,8 @@
             "bPaginate": false,
             "sPaginationType": "full_numbers",
             "lengthMenu": [
-                [10, 25, 50, -1],
-                [10, 25, 50, "All"]
+                [25, 50, -1],
+                [25, 50, "All"]
             ],
             "aoColumnDefs": [],
             "aoColumns": [

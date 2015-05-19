@@ -89,22 +89,23 @@ class spptModel(Base):
                                   (cls.pbb_yg_harus_dibayar_sppt+
                                   func.sum(func.coalesce(pspptModel.denda_sppt,0))-
                                   func.sum(func.coalesce(pspptModel.jml_sppt_yg_dibayar,0))).label('sisa')
+                    ).outerjoin(pspptModel, and_(
+                        cls.kd_propinsi    == pspptModel.kd_propinsi,
+                        cls.kd_dati2       == pspptModel.kd_dati2,
+                        cls.kd_kecamatan   == pspptModel.kd_kecamatan,
+                        cls.kd_kelurahan   == pspptModel.kd_kelurahan,
+                        cls.kd_blok        == pspptModel.kd_blok,
+                        cls.no_urut        == pspptModel.no_urut,
+                        cls.kd_jns_op      == pspptModel.kd_jns_op,
+                        cls.thn_pajak_sppt == pspptModel.thn_pajak_sppt)
                     ).filter(
-                    cls.kd_propinsi    == nop[:2],
-                    cls.kd_dati2       == nop[2:4],
-                    cls.kd_kecamatan   == nop[4:7],
-                    cls.kd_kelurahan   == nop[7:10],
-                    cls.kd_blok        == nop[10:13],
-                    cls.no_urut        == nop[13:17],
-                    cls.kd_jns_op      == nop[17:18],
-                    cls.kd_propinsi    == pspptModel.kd_propinsi,
-                    cls.kd_dati2       == pspptModel.kd_dati2, 
-                    cls.kd_kecamatan   == pspptModel.kd_kecamatan,
-                    cls.kd_kelurahan   == pspptModel.kd_kelurahan,
-                    cls.kd_blok        == pspptModel.kd_blok,
-                    cls.no_urut        == pspptModel.no_urut,
-                    cls.kd_jns_op      == pspptModel.kd_jns_op,
-                    cls.thn_pajak_sppt == pspptModel.thn_pajak_sppt
+                        cls.kd_propinsi    == nop[:2],
+                        cls.kd_dati2       == nop[2:4],
+                        cls.kd_kecamatan   == nop[4:7],
+                        cls.kd_kelurahan   == nop[7:10],
+                        cls.kd_blok        == nop[10:13],
+                        cls.no_urut        == nop[13:17],
+                        cls.kd_jns_op      == nop[17:18]
                     ).group_by(cls)                   
                
 

@@ -416,10 +416,10 @@ class esHome(BaseViews):
             columns = []
             columns.append(ColumnDT('thn_pajak_sppt'))
             columns.append(ColumnDT('nm_wp_sppt'))
-            columns.append(ColumnDT('pbb_yg_harus_dibayar_sppt'))
-            columns.append(ColumnDT('denda'))
-            columns.append(ColumnDT('bayar'))
-            columns.append(ColumnDT('sisa'))
+            columns.append(ColumnDT('pbb_yg_harus_dibayar_sppt', filter=self._DTnumberformat))
+            columns.append(ColumnDT('denda', filter=self._DTnumberformat))
+            columns.append(ColumnDT('bayar', filter=self._DTnumberformat))
+            columns.append(ColumnDT('sisa', filter=self._DTnumberformat))
             
             query = spptModel.get_sisa_by_nop(id)
             

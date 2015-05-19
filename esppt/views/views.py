@@ -151,6 +151,22 @@ class BaseViews(object):
         else:
             return chain
         
+    def _DTnumberformat(self, chain):
+        import locale
+        locale.setlocale(locale.LC_ALL, 'id_ID.utf8')
+        ret = locale.format("%d", chain, grouping=True)
+        if ret:
+          return ret
+        else:
+          return chain
+          
+    def _DTactive(self, chain):
+        ret = chain==1 and 'Aktif' or 'Inaktif'
+        if ret:
+          return ret
+        else:
+          return chain
+
         
     def is_logged(self):
         if self.logged:

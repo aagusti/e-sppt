@@ -1,9 +1,0 @@
-<html metal:use-macro="load: ostemplate.pt">
-
-<div metal:fill-slot="content">
-     <h1><span class="font-semi-bold">Modules</span>
-         <span class="smaller">&nbsp;</span></h1>
-</div>
-
-</html>
-

@@ -30,8 +30,8 @@
           "bInfo": false,
           "bFilter": false,
           "bAutoWidth": false,
-          //"bPaginate": false,
-          //"sPaginationType": "full_numbers",
+          "bPaginate": false,
+          "sPaginationType": "full_numbers",
           
           //"lengthMenu": [
           //    [10, 25, 50, -1],

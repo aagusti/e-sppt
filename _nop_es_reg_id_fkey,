@@ -1,0 +1,23 @@
+                                          Table "esppt.es_nop"
+    Column    |            Type             |                         Modifiers                         
+--------------+-----------------------------+-----------------------------------------------------------
+ id           | bigint                      | not null default nextval('esppt.es_nop_id_seq'::regclass)
+ created      | timestamp without time zone | not null
+ updated      | timestamp without time zone | not null
+ update_uid   | integer                     | 
+ create_uid   | integer                     | 
+ kd_propinsi  | character varying(2)        | not null
+ kd_dati2     | character varying(2)        | not null
+ kd_kecamatan | character varying(3)        | not null
+ kd_kelurahan | character varying(3)        | not null
+ kd_blok      | character varying(3)        | not null
+ no_urut      | character varying(4)        | not null
+ kd_jns_op    | character varying(1)        | not null
+ tahun        | character varying(4)        | not null
+ tgl_bayar    | date                        | not null
+ es_reg_id    | bigint                      | 
+Indexes:
+    "es_nop_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "es_nop_es_reg_id_fkey" FOREIGN KEY (es_reg_id) REFERENCES esppt.es_register(id)
+

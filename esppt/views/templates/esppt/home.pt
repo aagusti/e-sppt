@@ -6,7 +6,7 @@
       var mThn;
       var oTable;
       var iPos;
-      var oTableUrl = "/esppt/act/grid1";
+      var oTableUrl = "/esppt/grid1/act";
       Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
         var n = this,
             decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
@@ -77,7 +77,7 @@
                         oTable.$('tr.row_selected').removeClass('row_selected');
                         $(this).addClass('row_selected');
 
-                        oTable2.fnReloadAjax("esppt/act/grid2?id=" + mID);                
+                        oTable2.fnReloadAjax("esppt/grid2/act?id=" + mID);                
             }
         });
         
@@ -95,7 +95,7 @@
                     if (hapus == true) {
                         $.ajax({
                             type: "POST",
-                            url: "/esppt/act/delete",
+                            url: "/esppt/delete/act",
                             data: "id=" + mID,
                             success: function (html) {
                                 if (html.success == true) {
@@ -127,7 +127,7 @@
       $(document).ready(function () {
         oTable2 = $('#table2').dataTable({
             "sDom": '<"toolbar1">lfrtip',
-            "sAjaxSource": "/esppt/act/grid2",
+            "sAjaxSource": "/esppt/grid2/act",
             "bServerSide": true,
             "bProcessing": true,
             "bScrollCollapse": true,
@@ -200,7 +200,7 @@
             if (hapus == true) {
                 $.ajax({
                     type: "POST",
-                    url: "/esppt/act/sms",
+                    url: "/esppt/sms/act",
                     data: "id=" + mID+"&thn="+mThn,
                     success: function (html) {
                       if (html.success == true) {
@@ -223,6 +223,79 @@
                 alert('Silahkan pilih data terlebih dahulu');
           }
         });
+        
+        /*******************************************************************
+        * SPPT PDF
+        *******************************************************************/
+  /*      $("#load_pdf").on("click",function(){
+            //swap url with a pdf file you have access to for testing
+            var url = "http://localhost/Responder Manual.pdf";
+            $.get(url,function(data){
+                   //open a new window note:this is a popup so it may be blocked by your browser
+                   var newWindow = window.open("", "new window", "width=200, height=100");
+                   //write the data to the document of the newWindow
+                   newWindow.document.write(data);
+            });
+          });
+*/
+        $('#btn_sppt').click(function () {
+          if (mID && mThn) {
+            var url = "/esppt/report/sppt/act?id="+mID+'&thn='+mThn;
+            window.open(url, "new window", "width=200, height=100");
+                   
+            
+          }
+            /*    $.ajax({
+                    type: "POST",
+                    url: "/esppt/report/sppt/act",
+                    data: "id=" + mID+"&thn="+mThn,
+                    success: function (html) {
+                        var newWindow = window.open("", "SPPT", "width=200, height=100");
+                        newWindow.document.write(html);
+                    },
+                    beforeSend: function () {
+                        $("#errors").css('display', 'inline', 'important');
+                        $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                    }
+                });
+          } else {
+                alert('Silahkan pilih data terlebih dahulu');
+          }*/
+        });
+        
+        /*******************************************************************
+        * Email PDF
+        *******************************************************************/
+        $('#btn_email').click(function () {
+          if (mID && mThn) {
+            var hapus = confirm('Kirim data ini?');
+            if (hapus == true) {
+                $.ajax({
+                    type: "POST",
+                    url: "/esppt/sms/act",
+                    data: "id=" + mID+"&thn="+mThn,
+                    success: function (html) {
+                      if (html.success == true) {
+                          $("#errors").css('display', 'inline', 'important');
+                          $("#errors").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                          //TODO: Redraw after delete
+                      } else {
+                          $("#errors").css('display', 'inline', 'important');
+                          $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
+                      }
+                    },
+                    beforeSend: function () {
+                        $("#errors").css('display', 'inline', 'important');
+                        $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                    }
+                });
+                return false;
+            };
+          } else {
+                alert('Silahkan pilih data terlebih dahulu');
+          }
+        });        
+        
       });
     </script>
     

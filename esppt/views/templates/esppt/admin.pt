@@ -6,7 +6,7 @@
       var mThn;
       var oTable;
       var iPos;
-      var oTableUrl = "/esppt/admin/act/grid";
+      var oTableUrl = "/esppt/admin/grid/act";
       Number.prototype.formatMoney = function(decPlaces, thouSeparator, decSeparator) {
         var n = this,
             decPlaces = isNaN(decPlaces = Math.abs(decPlaces)) ? 2 : decPlaces,
@@ -92,7 +92,7 @@
             if (hapus == true) {
               $.ajax({
                   type: "POST",
-                  url: "/esppt/admin/act/delete",
+                  url: "/esppt/admin/delete/act",
                   data: "id=" + mID,
                   success: function (html) {
                       if (html.success == true) {

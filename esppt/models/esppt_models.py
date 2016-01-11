@@ -1,12 +1,46 @@
 import sys
 from model_base import *
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKeyConstraint
 from sqlalchemy.orm import relationship
-                      
+           
+class dati2Model(Base):
+    __tablename__  = 'ref_dati2'
+    __table_args__ = ({'extend_existing':True , #'schema' : 'pbb', 
+                      'autoload':True})
+class kecamatanModel(Base):
+    __tablename__  = 'ref_kecamatan'
+    __table_args__ = (ForeignKeyConstraint(['kd_propinsi','kd_dati2'],
+                         ['ref_dati2.kd_propinsi','ref_dati2.kd_dati2']),
+                      {'extend_existing':True , #'schema' : 'pbb', 
+                      'autoload':True})
+class kelurahanModel(Base):
+    __tablename__  = 'ref_kelurahan'
+    __table_args__ = (ForeignKeyConstraint(['kd_propinsi','kd_dati2','kd_kecamatan'],
+                         ['ref_kecamatan.kd_propinsi','ref_kecamatan.kd_dati2',
+                          'ref_kecamatan.kd_kecamatan']),
+                      {'extend_existing':True , #'schema' : 'pbb', 
+                      'autoload':True})
+            
 class spptModel(Base):
     __tablename__  = 'sppt'
-    __table_args__ = {'extend_existing':True , #'schema' : 'pbb', 
-                      'autoload':True}
+    __table_args__ = (ForeignKeyConstraint(['kd_propinsi','kd_dati2','kd_kecamatan','kd_kelurahan',
+                          'kd_blok','no_urut','kd_jns_op'],
+                         ['dat_objek_pajak.kd_propinsi','dat_objek_pajak.kd_dati2',
+                          'dat_objek_pajak.kd_kecamatan','dat_objek_pajak.kd_kelurahan',
+                          'dat_objek_pajak.kd_blok','dat_objek_pajak.no_urut',
+                          'dat_objek_pajak.kd_jns_op']),
+                      {'extend_existing':True , #'schema' : 'pbb', 
+                      'autoload':True})
+    
+    """dop = relationship("dopModel",
+                       primaryjoin="and_(spptModel.kd_propinsi==dopModel.kd_propinsi, "
+                                         "spptModel.kd_dati2==dopModel.kd_dati2, "
+                                         "spptModel.kd_kecamatan==dopModel.kd_kecamatan, "
+                                         "spptModel.kd_kelurahan==dopModel.kd_kelurahan, "
+                                         "spptModel.kd_blok==dopModel.kd_blok, "
+                                         "spptModel.no_urut==dopModel.no_urut, "
+                                         "spptModel.kd_jns_op==dopModel.kd_jns_op)")                  
+    """
     """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
     kd_kecamatan             = Column(String(3) , nullable=False, primary_key=True)                      
@@ -108,11 +142,18 @@ class spptModel(Base):
                         cls.kd_jns_op      == nop[17:18]
                     ).group_by(cls)                   
                
-
+class dopModel(Base):
+    __tablename__  = 'dat_objek_pajak'
+    __table_args__ = (ForeignKeyConstraint(['kd_propinsi','kd_dati2','kd_kecamatan','kd_kelurahan'],
+                         ['ref_kelurahan.kd_propinsi','ref_kelurahan.kd_dati2',
+                          'ref_kelurahan.kd_kecamatan','ref_kelurahan.kd_kelurahan']),
+                     {'extend_existing':True, # ,'schema' : 'public', 
+                      'autoload':True})
+                      
 class pspptModel(Base):
     __tablename__  = 'pembayaran_sppt'
     __table_args__ = {'extend_existing':True, # ,'schema' : 'public', 
-                      'autoload':True}
+                      'autoload':True}                  
     """kd_propinsi              = Column(String(2) , nullable=False, primary_key=True)
     kd_dati2                 = Column(String(2) , nullable=False, primary_key=True)                      
     kd_kecamatan             = Column(String(3) , nullable=False, primary_key=True)                      
@@ -227,7 +268,7 @@ class esNopModel(BaseDB, Base):
     tgl_bayar           = Column(Date, nullable=False)        
     es_reg_id           = Column(BigInteger, ForeignKey("esppt.es_register.id"))
     es_register         = relationship("esRegModel", backref="es_nop")
-    
+    pdf_proses          = Column(Integer)
     """def __init__(self, data):
         BaseDB.__init__(self,data)
         self.nama           = data['nama']
@@ -259,7 +300,6 @@ class esNopModel(BaseDB, Base):
         
     @classmethod
     def get_by_nop(cls,nop):
-        print nop
         return DBSession.query(cls).filter(
                     cls.kd_propinsi    == nop[:2],
                     cls.kd_dati2       == nop[2:4],

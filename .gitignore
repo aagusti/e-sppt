@@ -37,3 +37,5 @@ nosetests.xml
 *.proj
 .pydevproject
 #*.png
+test.ini
+live.ini

@@ -268,7 +268,6 @@ class esNopModel(BaseDB, Base):
     tgl_bayar           = Column(Date, nullable=False)        
     es_reg_id           = Column(BigInteger, ForeignKey("esppt.es_register.id"))
     es_register         = relationship("esRegModel", backref="es_nop")
-    pdf_proses          = Column(Integer)
     """def __init__(self, data):
         BaseDB.__init__(self,data)
         self.nama           = data['nama']

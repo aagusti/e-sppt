@@ -17,11 +17,11 @@ from ..models.model_base import (
     Base,
     )
 
-from ..models.esppt_models import(
-    esRegModel,
-    esNopModel,
-    userModel
-    )
+#from ..models.esppt_models import(
+    #esRegModel,
+    #esNopModel,
+    #userModel
+    #)
 def usage(argv):
     cmd = os.path.basename(argv[0])
     print('usage: %s <config_uri> [var=value]\n'
@@ -37,6 +37,7 @@ def main(argv=sys.argv):
     setup_logging(config_uri)
     settings = get_appsettings(config_uri, options=options)
     engine = engine_from_config(settings, 'sqlalchemy.')
+    #Base.metadata.bind = engine
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
 #    with transaction.manager:

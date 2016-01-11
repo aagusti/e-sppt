@@ -39,3 +39,4 @@ nosetests.xml
 #*.png
 test.ini
 live.ini
+start.sh

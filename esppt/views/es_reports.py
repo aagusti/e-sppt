@@ -1,5 +1,7 @@
 import unittest
 import os.path
+import urlparse
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.httpexceptions import HTTPForbidden
 from pyramid.httpexceptions import HTTPNotFound
@@ -22,6 +24,12 @@ from pyjasper import (JasperGenerator)
 from pyjasper import (JasperGeneratorWithSubreport)
 import xml.etree.ElementTree as ET
 from pyramid.path import AssetResolver
+
+def get_logo():
+    a = AssetResolver('esppt') 
+    resolver = a.resolve(''.join(['static/images/','logo_rpt.png']))
+    return resolver.abspath()
+#logo = '/home/tangselkota/domains/e-sppt.tangselkota.org/env/e-sppt/esppt/static/images/logo_tangsel.png'
 
 def get_rpath(filename):
     a = AssetResolver('esppt')
@@ -79,6 +87,8 @@ class r001Generator(JasperGenerator):
             ET.SubElement(xml_greeting, "jabatan").text = 'jabatan'
             ET.SubElement(xml_greeting, "kepala").text = 'kepala'
             ET.SubElement(xml_greeting, "nip").text = '123456789'
+            ET.SubElement(xml_greeting, "logo").text = get_logo()
+        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", logo
         print ET.tostring(self.root, encoding='utf8', method='xml')
         return self.root
         
@@ -89,6 +99,12 @@ class ViewSPPTLap(BaseViews):
             headers=forget(self.request)
             return HTTPFound(location='/login?app=%s' % self.app, headers=headers)
             
+        #global logo
+        #logo   = ''
+        #logo   = 'https://e-sppt.tangselkota.org/static/images/logo_tangsel.png'
+        #logo = self.request.static_url('esppt:static/images/logo_tangsel.png')
+        #logo = self.request.static_url('esppt:static/images/logo_tangsel.png')
+        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", logo
         req    = self.request
         params = req.params
         url_dict = req.matchdict

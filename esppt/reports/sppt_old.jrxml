@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="623"/>
-	<property name="ireport.y" value="960"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="858"/>
 	<queryString language="xPath">
 		<![CDATA[/pad/sppt]]>
 	</queryString>
@@ -102,9 +102,6 @@
 	<field name="njoptkp" class="java.lang.String">
 		<fieldDescription><![CDATA[njoptkp]]></fieldDescription>
 	</field>
-	<field name="logo" class="java.lang.String">
-		<fieldDescription><![CDATA[logo]]></fieldDescription>
-	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -143,6 +140,9 @@
 				<textElement textAlignment="Right" markup="none"/>
 				<text><![CDATA[PERKOTAAN]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="2" width="69" height="59"/>
+			</image>
 			<staticText>
 				<reportElement x="69" y="2" width="486" height="20"/>
 				<textElement textAlignment="Center">
@@ -170,10 +170,6 @@
 			<line>
 				<reportElement x="0" y="72" width="555" height="1"/>
 			</line>
-			<image>
-				<reportElement x="0" y="2" width="69" height="70"/>
-				<imageExpression><![CDATA[$F{logo}]]></imageExpression>
-			</image>
 		</band>
 	</title>
 	<detail>
@@ -401,7 +397,7 @@
 				<textElement textAlignment="Right" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{pbb}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pbb}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="208" y="216" width="21" height="15"/>
@@ -416,14 +412,14 @@
 			<textField>
 				<reportElement x="110" y="148" width="93" height="15"/>
 				<textElement textAlignment="Right" markup="none"/>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{bng_luas}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bng_luas}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="229" y="216" width="319" height="15"/>
 				<textElement textAlignment="Right" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{njoptkp}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{njoptkp}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="213" y="133" width="52" height="15"/>
@@ -452,7 +448,7 @@
 			<textField>
 				<reportElement x="406" y="148" width="141" height="15"/>
 				<textElement textAlignment="Right" markup="none"/>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{bng_total}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bng_total}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="208" y="246" width="21" height="15"/>
@@ -466,7 +462,7 @@
 				<textElement textAlignment="Right" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{njop_dasar}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{njop_dasar}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="261" width="206" height="15"/>
@@ -504,12 +500,12 @@
 			<textField>
 				<reportElement x="110" y="133" width="93" height="15"/>
 				<textElement textAlignment="Right" markup="none"/>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{bumi_luas}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bumi_luas}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="265" y="133" width="131" height="15"/>
 				<textElement textAlignment="Right" markup="none"/>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{bumi_njop}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bumi_njop}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="208" y="201" width="21" height="15"/>
@@ -526,7 +522,7 @@
 			<textField>
 				<reportElement x="265" y="148" width="131" height="15"/>
 				<textElement textAlignment="Right" markup="none"/>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{bng_njop}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bng_njop}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="246" width="206" height="15"/>
@@ -580,14 +576,14 @@
 			<textField>
 				<reportElement x="406" y="133" width="141" height="15"/>
 				<textElement textAlignment="Right" markup="none"/>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{bumi_total}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{bumi_total}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="229" y="231" width="319" height="15"/>
 				<textElement textAlignment="Right" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{njop_pbb}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{njop_pbb}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="286" y="369" width="266" height="15"/>
@@ -631,7 +627,7 @@
 				</textElement>
 				<text><![CDATA[TEMPAT PEMBAYARAN:
 PT. BANK JABAR BANTEN (TELLER , ATM DAN E-CHANNEL )
-PT. BANK CENTRAL ASIA (ATM DAN E-CHANNEL)]]></text>
+PT. BANK CENTRAL ASIA (ATM DAN E-CHANNER)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="360" y="49" width="195" height="15"/>

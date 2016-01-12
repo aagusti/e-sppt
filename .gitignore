@@ -40,3 +40,5 @@ nosetests.xml
 test.ini
 live.ini
 start.sh
+logo.png
+logo_rpt.png

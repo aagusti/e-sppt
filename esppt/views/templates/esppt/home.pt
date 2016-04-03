@@ -46,6 +46,8 @@
               null,
               null,
               null,
+              null,
+              null,
               
           ]
         });
@@ -316,6 +318,8 @@
                             <th>Blok</th>
                             <th>Norut</th>
                             <th>Jns</th>
+                            <th>SMS</th>
+                            <th>e-mail</th>
                         </tr>
                     </thead>
                     <tbody>

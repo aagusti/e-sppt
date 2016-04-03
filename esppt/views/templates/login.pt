@@ -43,7 +43,7 @@
             <input type="text" name="userid" id="userid" class="form-control" placeholder="User ID" required autofocus>
             <input type="password" name="passwd" id="passwd" class="form-control" placeholder="Password" required>
             <input type="submit" class="btn btn-lg btn-primary btn-block" name="login" id="login" value="Login">
-            <input type="button" class="btn btn-lg btn-primary btn-block" name="back" id="back" value="Kembali">
+            <input type="button" class="btn btn-lg btn-primary btn-block" name="back" id="back" value="Register">
             
             <div id="errors"></div>
         </form>

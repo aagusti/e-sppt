@@ -59,6 +59,7 @@ class esAdmin(BaseViews):
             columns.append(ColumnDT('kecamatan'))
             columns.append(ColumnDT('kabupaten'))
             columns.append(ColumnDT('no_hp'))
+
             query = DBSession.query(esRegModel)
             rowTable = DataTables(req, esRegModel, query, columns)
             return rowTable.output_result()

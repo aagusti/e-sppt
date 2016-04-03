@@ -8,6 +8,7 @@ esppt_route = (
   ('es_reg_act','/reg/{act}'),
   ('es_admin', '/esppt/admin'),
   ('es_admin_act', '/esppt/admin/{act}/act'),
-  ('es_reg', '/'),
+  ('es_reg', '/register'),
   ('es_report_act', '/esppt/report/{act}/act'),
+  ('es_gen_sppt', '/esppt/generate/{thn}'),
 )

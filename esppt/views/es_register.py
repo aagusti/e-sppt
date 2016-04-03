@@ -272,8 +272,12 @@ def save_reg_request(values, request, row=None):
 def save_nop_request(values, request, row=None):
     if 'id' in request.matchdict:
         values['id'] = request.matchdict['id']
+        
     if  not 'es_reg_id' in values:
-        values['es_reg_id'] = esRegModel.get_by_nik(request.session['userid']).id    
+        sid = esRegModel.get_by_nik(request.session['userid'])
+        if not sid:
+            return
+        values['es_reg_id'] = sid.id
     row=[]
     row = save_nop(values,row)
     
@@ -399,8 +403,17 @@ class esHome(BaseViews):
             columns.append(ColumnDT('kd_blok'))
             columns.append(ColumnDT('no_urut'))
             columns.append(ColumnDT('kd_jns_op'))
+            columns.append(ColumnDT('sms_sent'))
+            columns.append(ColumnDT('email_sent'))
+            sid = esRegModel.get_by_nik(ses['userid'])
+            if not sid:
+                aadata= {"aaData": [], 
+                          "iTotalRecords": "0", 
+                          "sEcho": "1", 
+                          "iTotalDisplayRecords": "0"}
+                return aadata
             query = DBSession.query(esNopModel).filter(
-                esNopModel.es_reg_id == esRegModel.get_by_nik(ses['userid']).id
+                esNopModel.es_reg_id == sid.id
               )
             rowTable = DataTables(req, esNopModel, query, columns)
             return rowTable.output_result()

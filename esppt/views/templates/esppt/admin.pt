@@ -54,6 +54,8 @@
           '<div class="btn-group pull-left">',
           '	<button id="btn_delete" class="btn btn btn-danger" type="button">Hapus</button>',
           '	<button id="btn_profile" name="btn_profile" class="btn btn-primary" type="button">Profile</button>',
+          '	<input type="text" id="txt_thn" name="txt_thn" class="" >',
+          '	<button id="btn_gen" name="btn_gen" class="btn btn-primary" type="button">Proses</button>',
           '	&nbsp;',
           '</div>',
         ];
@@ -116,7 +118,42 @@
           } else {
               alert('Silahkan pilih data yang akan dihapus');
           }
-            });
+        });
+        
+        //proses massal
+        $('#btn_gen').click(function () {
+            var thn = $('#txt_thn').val();
+            if (isNaN(thn) || thn==''){
+                alert('Tahun Bukan Numeric');
+                return
+            }
+            
+            var hapus = confirm('Proses data tahun '+thn+'?');
+            if (hapus == true) {
+              $.ajax({
+                  type: "GET",
+                  url: "/esppt/generate/"+thn,
+                  //data: "id=" + mID,
+                  success: function (html) {
+                      if (html.status == 1) {
+                          $("#errors").css('display', 'inline', 'important');
+                          $("#errors").html("<span class='glyphicon glyphicon-ok'></span> " + html.message);
+                          //TODO: Redraw after delete
+                      } else {
+                          $("#errors").css('display', 'inline', 'important');
+                          $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.message);
+                      }
+                  },
+                  beforeSend: function () {
+                      $("#errors").css('display', 'inline', 'important');
+                      $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                  }
+              });
+                return false;
+              };
+          
+        });
+            
         });
     </script>
     

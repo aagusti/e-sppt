@@ -210,6 +210,7 @@ class userModel(BaseDB, Base):
         return DBSession.query(cls).filter(
                   cls.userid == uid
                 ).first()
+                
         
 class esRegModel(BaseModelDB, Base):
     __tablename__  = 'es_register'
@@ -265,9 +266,12 @@ class esNopModel(BaseDB, Base):
     no_urut             = Column(String(4), nullable=False)
     kd_jns_op           = Column(String(1), nullable=False)
     tahun               = Column(String(4), nullable=False)
-    tgl_bayar           = Column(Date, nullable=False)        
+    tgl_bayar           = Column(Date, nullable=False)
+    sms_sent            = Column(Integer)
+    email_sent          = Column(Integer)
     es_reg_id           = Column(BigInteger, ForeignKey("esppt.es_register.id"))
     es_register         = relationship("esRegModel", backref="es_nop")
+    
     """def __init__(self, data):
         BaseDB.__init__(self,data)
         self.nama           = data['nama']

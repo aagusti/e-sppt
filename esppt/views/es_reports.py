@@ -10,7 +10,7 @@ from pyramid.security import remember
 from pyramid.security import forget
 from pyramid.security import has_permission
 from sqlalchemy import *
-from sqlalchemy import distinct
+from sqlalchemy import distinct, literal_column
 from sqlalchemy.sql.functions import concat
 from sqlalchemy.exc import DBAPIError
 from views import *
@@ -24,7 +24,8 @@ from pyjasper import (JasperGenerator)
 from pyjasper import (JasperGeneratorWithSubreport)
 import xml.etree.ElementTree as ET
 from pyramid.path import AssetResolver
-
+import PyPDF2
+from ..models.esppt_models import userModel
 def get_logo():
     a = AssetResolver('esppt') 
     resolver = a.resolve(''.join(['static/images/','logo_rpt.png']))
@@ -53,7 +54,7 @@ class r001Generator(JasperGenerator):
             ET.SubElement(xml_greeting, "nop").text = "%s.%s-%s.%s-%s.%s-%s" % (row.kd_propinsi, 
                        row.kd_dati2, row.kd_kecamatan, row.kd_kelurahan, row.kd_blok, row.no_urut, 
                        row.kd_jns_op)
-            ET.SubElement(xml_greeting, "alamat_op").text = row.jalan_op
+            ET.SubElement(xml_greeting, "alamat_op").text = row.jalan_op and row.jalan_op or '-'
             ET.SubElement(xml_greeting, "rt_rw_op").text = "%s %s/%s" % (row.blok_kav_no_op and row.blok_kav_no_op or '-', 
                                                              row.rw_op and row.rw_op or '000',
                                                              row.rt_op and row.rt_op or '00')
@@ -61,14 +62,14 @@ class r001Generator(JasperGenerator):
             ET.SubElement(xml_greeting, "kec_op").text = row.nm_kecamatan and row.nm_kecamatan  or '-'
             ET.SubElement(xml_greeting, "kota_op").text = row.nm_dati2 and  row.nm_dati2 or '-'
             ET.SubElement(xml_greeting, "nama_wp").text = row.nm_wp_sppt
-            ET.SubElement(xml_greeting, "alamat_wp").text = row.jln_wp_sppt
+            ET.SubElement(xml_greeting, "alamat_wp").text = row.jln_wp_sppt and row.jln_wp_sppt or '-'
             ET.SubElement(xml_greeting, "rt_rw_wp").text = '%s %s/%s' % (row.blok_kav_no_wp_sppt and row.blok_kav_no_wp_sppt or '-',
                                                                       row.rt_wp_sppt and row.rt_wp_sppt or '000', 
                                                                       row.rw_wp_sppt and row.rw_wp_sppt or '00')
             ET.SubElement(xml_greeting, "desa_wp").text = row.kelurahan_wp_sppt
             ET.SubElement(xml_greeting, "kec_wp").text = '' #row.kec_wp
             ET.SubElement(xml_greeting, "kota_wp").text = row.kota_wp_sppt
-            ET.SubElement(xml_greeting, "npwp").text = row.npwp_sppt
+            ET.SubElement(xml_greeting, "npwp").text = row.npwp_sppt and row.npwp_sppt or '-'
             ET.SubElement(xml_greeting, "bumi_luas").text = unicode(row.luas_bumi_sppt)
             ET.SubElement(xml_greeting, "bumi_kelas").text = '001' #unicode(row.bumi_kelas)
             ET.SubElement(xml_greeting, "bumi_njop").text = unicode(row.luas_bumi_sppt and row.njop_bumi_sppt/row.luas_bumi_sppt or 0)
@@ -88,63 +89,172 @@ class r001Generator(JasperGenerator):
             ET.SubElement(xml_greeting, "kepala").text = 'kepala'
             ET.SubElement(xml_greeting, "nip").text = '123456789'
             ET.SubElement(xml_greeting, "logo").text = get_logo()
+            ET.SubElement(xml_greeting, "tgl_proses").text = row.tgl_proses.strftime('%d-%m-%Y')
+            ET.SubElement(xml_greeting, "sequence").text = row.sequence
         #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", logo
         print ET.tostring(self.root, encoding='utf8', method='xml')
         return self.root
         
 class ViewSPPTLap(BaseViews):
+    def genarate_sppt(self,nop,thn,user_id):
+        _here = os.path.dirname(__file__)
+        sppt_path  = os.path.join(os.path.dirname(_here), 'sppt')
+        sppt_file  = '%s/%s%s.pdf' %(sppt_path,nop,thn) 
+        if not os.path.exists(sppt_file):
+            q = DBSession.query(spptModel.kd_propinsi, spptModel.kd_dati2, spptModel.kd_kecamatan, 
+                        spptModel.kd_kelurahan, spptModel.kd_blok, spptModel.no_urut, spptModel.kd_jns_op, 
+                        spptModel.thn_pajak_sppt, spptModel.nm_wp_sppt, spptModel.jln_wp_sppt, 
+                        spptModel.blok_kav_no_wp_sppt, spptModel.rw_wp_sppt, spptModel.rt_wp_sppt, 
+                        spptModel.kelurahan_wp_sppt, spptModel.kota_wp_sppt, spptModel.kd_pos_wp_sppt, 
+                        spptModel.npwp_sppt, spptModel.kd_kls_tanah, spptModel.kd_kls_bng, 
+                        spptModel.tgl_jatuh_tempo_sppt, spptModel.luas_bumi_sppt, spptModel.luas_bng_sppt, 
+                        spptModel.njop_bumi_sppt, spptModel.njop_bng_sppt, spptModel.njop_sppt, 
+                        spptModel.njoptkp_sppt, spptModel.pbb_terhutang_sppt, 
+                        spptModel.pbb_yg_harus_dibayar_sppt, spptModel.tgl_terbit_sppt, 
+                        dopModel.jalan_op, dopModel.blok_kav_no_op, dopModel.rw_op,dopModel.rt_op, 
+                        kelurahanModel.nm_kelurahan, kecamatanModel.nm_kecamatan, dati2Model.nm_dati2).\
+                    outerjoin(dopModel).\
+                    outerjoin(kelurahanModel).\
+                    outerjoin(kecamatanModel).\
+                    outerjoin(dati2Model).\
+                    filter(
+                        spptModel.kd_propinsi    == nop[:2],
+                        spptModel.kd_dati2       == nop[2:4],
+                        spptModel.kd_kecamatan   == nop[4:7],
+                        spptModel.kd_kelurahan   == nop[7:10],
+                        spptModel.kd_blok        == nop[10:13],
+                        spptModel.no_urut        == nop[13:17],
+                        spptModel.kd_jns_op      == nop[17:18],
+                        spptModel.thn_pajak_sppt == thn)
+            row = q.first()
+            
+            v_pbb_hrsbyr = str(row.pbb_yg_harus_dibayar_sppt)
+            v_c1 = datetime.now().strftime('%d%m%Y%H%M%S')
+            v_c2 = v_pbb_hrsbyr[:1];
+            v_c3 = row.nm_wp_sppt[:1];
+            v_c4 = 'X' #row.kd_znt and row.znt[:1] or '0'
+            v_c5 = row.nm_wp_sppt[-1:]
+            v_c6 = str(len(v_pbb_hrsbyr) - 3)[:1]
+            v_c7 = row.nm_wp_sppt[2:1]
+            v_c8 = str(len(v_pbb_hrsbyr))
+            v_c9 = 'ES'
+            kode = "".join([v_c1,v_c2,v_c3,v_c4,v_c5,v_c6,v_c7,v_c8,v_c9])
+            query = DBSession.query(spptModel.kd_propinsi, spptModel.kd_dati2, spptModel.kd_kecamatan, 
+                        spptModel.kd_kelurahan, spptModel.kd_blok, spptModel.no_urut, spptModel.kd_jns_op, 
+                        spptModel.thn_pajak_sppt, spptModel.nm_wp_sppt, spptModel.jln_wp_sppt, 
+                        spptModel.blok_kav_no_wp_sppt, spptModel.rw_wp_sppt, spptModel.rt_wp_sppt, 
+                        spptModel.kelurahan_wp_sppt, spptModel.kota_wp_sppt, spptModel.kd_pos_wp_sppt, 
+                        spptModel.npwp_sppt, spptModel.kd_kls_tanah, spptModel.kd_kls_bng, 
+                        spptModel.tgl_jatuh_tempo_sppt, spptModel.luas_bumi_sppt, spptModel.luas_bng_sppt, 
+                        spptModel.njop_bumi_sppt, spptModel.njop_bng_sppt, spptModel.njop_sppt, 
+                        spptModel.njoptkp_sppt, spptModel.pbb_terhutang_sppt, 
+                        spptModel.pbb_yg_harus_dibayar_sppt, spptModel.tgl_terbit_sppt, 
+                        dopModel.jalan_op, dopModel.blok_kav_no_op, dopModel.rw_op,dopModel.rt_op,
+                        kelurahanModel.nm_kelurahan, kecamatanModel.nm_kecamatan, dati2Model.nm_dati2,
+                        literal_column("'%s'" %kode).label("sequence"),
+                        func.current_timestamp().label("tgl_proses")).\
+                    outerjoin(dopModel).\
+                    outerjoin(kelurahanModel).\
+                    outerjoin(kecamatanModel).\
+                    outerjoin(dati2Model).\
+                    filter(
+                        spptModel.kd_propinsi    == nop[:2],
+                        spptModel.kd_dati2       == nop[2:4],
+                        spptModel.kd_kecamatan   == nop[4:7],
+                        spptModel.kd_kelurahan   == nop[7:10],
+                        spptModel.kd_blok        == nop[10:13],
+                        spptModel.no_urut        == nop[13:17],
+                        spptModel.kd_jns_op      == nop[17:18],
+                        spptModel.thn_pajak_sppt == thn)
+                        
+            generator = r001Generator()
+            pdf = generator.generate(query) #,sign_keyname='a', sign_reason='a', metadata='tangsel')
+            
+            owner_pass='t4ngs3l'
+            user_pass='t4ngs3l'
+            users = userModel.get_by_user(user_id)
+            if users:
+                user_pass=users.passwd.encode('utf8') 
+            # else:
+                # user_pass='t4ngs3l'
+            #print user_pass, owner_pass
+            output_file ='%s.tmp' %sppt_file
+            
+            open(sppt_file, 'w').write(pdf)
+            
+            output = PyPDF2.PdfFileWriter()
+            input_stream = PyPDF2.PdfFileReader(open(sppt_file, "rb"))
+
+            for i in range(0, input_stream.getNumPages()):
+                output.addPage(input_stream.getPage(i))
+         
+            outputStream = open(output_file, "wb")
+         
+            # Set user and owner password to pdf file
+            output.encrypt(user_pass, owner_pass, use_128bit=True)
+            output.write(outputStream)
+            outputStream.close()
+         
+            # Rename temporary output file with original filename, this
+            # will automatically delete temporary file
+            os.rename(output_file, sppt_file)
+        return sppt_file
+        
     @view_config(route_name="es_report_act")
     def es_report_act(self):
         if not self.logged :
             headers=forget(self.request)
             return HTTPFound(location='/login?app=%s' % self.app, headers=headers)
             
-        #global logo
-        #logo   = ''
-        #logo   = 'https://e-sppt.tangselkota.org/static/images/logo_tangsel.png'
-        #logo = self.request.static_url('esppt:static/images/logo_tangsel.png')
-        #logo = self.request.static_url('esppt:static/images/logo_tangsel.png')
-        #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", logo
         req    = self.request
         params = req.params
         url_dict = req.matchdict
-        url_dict = req.matchdict 
 
         if url_dict['act'] == 'sppt':
             pk_id = 'id' in params and params['id']  or None
             if pk_id:
                 nop = pk_id
-                query = DBSession.query(spptModel.kd_propinsi, spptModel.kd_dati2, spptModel.kd_kecamatan, 
-                            spptModel.kd_kelurahan, spptModel.kd_blok, spptModel.no_urut, spptModel.kd_jns_op, 
-                            spptModel.thn_pajak_sppt, spptModel.nm_wp_sppt, spptModel.jln_wp_sppt, 
-                            spptModel.blok_kav_no_wp_sppt, spptModel.rw_wp_sppt, spptModel.rt_wp_sppt, 
-                            spptModel.kelurahan_wp_sppt, spptModel.kota_wp_sppt, spptModel.kd_pos_wp_sppt, 
-                            spptModel.npwp_sppt, spptModel.kd_kls_tanah, spptModel.kd_kls_bng, 
-                            spptModel.tgl_jatuh_tempo_sppt, spptModel.luas_bumi_sppt, spptModel.luas_bng_sppt, 
-                            spptModel.njop_bumi_sppt, spptModel.njop_bng_sppt, spptModel.njop_sppt, 
-                            spptModel.njoptkp_sppt, spptModel.pbb_terhutang_sppt, 
-                            spptModel.pbb_yg_harus_dibayar_sppt, spptModel.tgl_terbit_sppt, 
-                            dopModel.jalan_op, dopModel.blok_kav_no_op, dopModel.rw_op,dopModel.rt_op,
-                            kelurahanModel.nm_kelurahan, kecamatanModel.nm_kecamatan, dati2Model.nm_dati2).\
-                        outerjoin(dopModel).\
-                        outerjoin(kelurahanModel).\
-                        outerjoin(kecamatanModel).\
-                        outerjoin(dati2Model).\
-                        filter(
-                            spptModel.kd_propinsi    == nop[:2],
-                            spptModel.kd_dati2       == nop[2:4],
-                            spptModel.kd_kecamatan   == nop[4:7],
-                            spptModel.kd_kelurahan   == nop[7:10],
-                            spptModel.kd_blok        == nop[10:13],
-                            spptModel.no_urut        == nop[13:17],
-                            spptModel.kd_jns_op      == nop[17:18],
-                            spptModel.thn_pajak_sppt == params['thn'])
-                generator = r001Generator()
-                pdf = generator.generate(query)
+                thn = params['thn']
+                sppt_file = self.genarate_sppt(nop,thn,req.session['userid'])
+                pdf = open(sppt_file, 'r').read()
                 response=req.response
                 response.content_type="application/pdf"
-                response.content_disposition='filename=sppt.pdf' 
+                response.content_disposition='filename=%s.pdf' %nop
                 response.write(pdf)
                 return response
         else:
             return HTTPNotFound() #TODO: Warning Hak Akses 
+            
+    @view_config(route_name="es_gen_sppt", renderer='json')
+    def es_sppt_gen(self):
+        req =  self.request
+        url_dict = req.matchdict
+        thn = url_dict['thn']
+        if int(float(thn)) != datetime.now().year:
+            thn = None
+   
+        if not thn or req.session['userid']!='sa':
+            json_data ={"status":0,
+                  "message":"Not Allowed"}
+            return json_data
+        
+        q = DBSession.query(esNopModel).join(esRegModel).\
+                      order_by(esNopModel.kd_propinsi,esNopModel.kd_dati2,esNopModel.kd_kecamatan,
+                               esNopModel.kd_kelurahan,esNopModel.kd_blok,esNopModel.no_urut,
+                               esNopModel.kd_jns_op)
+        rows = q.all()
+        
+        for row in rows:
+            nop = "".join([row.kd_propinsi,row.kd_dati2,row.kd_kecamatan,
+                             row.kd_kelurahan,row.kd_blok,row.no_urut,row.kd_jns_op]) 
+            sppt_file = self.genarate_sppt(nop,thn,row.es_register.kode)
+            row.tahun = thn
+            row.sms_sent = 0
+            row.email_sent = 0
+            DBSession.add(row)
+            DBSession.flush()
+            
+        json_data ={"status":1,
+                    "message":"Success"}
+        return json_data
+        

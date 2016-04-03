@@ -70,7 +70,7 @@ class BaseViews(object):
         self.context = context
         self.request = request
         self.session = request.session
-        self.cut_nm   = "PEMERINTAH KABUPATEN/KOTA DEMO"
+        self.cut_nm   = "PEMERINTAH KOTA TANGERANG SELATAN"
         ##Initialaize session
         if not 'app' in self.session:
             self.session['app'] = ""

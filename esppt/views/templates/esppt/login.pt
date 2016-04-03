@@ -5,7 +5,7 @@
         </div>
         <style>
         .form-signin {
-  max-width: 330px;
+  max-width: 400px;
   padding: 15px;
   margin: 0 auto;
 }
@@ -68,20 +68,19 @@
                     return false;
                 });
                 $("#back").click(function () {
-                    window.location = "/";
+                    window.location = "/register";
                     return false;
                 });
             });
         </script>
         
         <div class="panel-body">
-            <!--div class="page-header">
-                <h1>Login e-SPPT</h1>
-            </div-->
             
             <center>
                 <form class="form-signin" role="form" action="#" id="loginfrm">
-                    <h2 class="form-signin-heading">Login e-SPPT</h2>
+                  <img src="${request.static_url('esppt:static/images/login.png')}" style="height:80px;" />
+
+                    <h2 class="form-signin-heading">Login</h2>
                     <input type="hidden" name="app" id="app" value="${datas.app}">
                     <div class="form-group">
                         <input type="text" name="userid" id="userid" class="form-control" placeholder="User ID" required autofocus>
@@ -90,7 +89,7 @@
                     <input type="password" name="passwd" id="passwd" class="form-control" placeholder="Password" required>
                     </div>
                     <input type="submit" class="btn btn-lg btn-primary btn-block" name="login" id="login" value="Login">
-                    <input type="button" class="btn btn-lg btn-primary btn-block" name="back" id="back" value="Kembali">
+                    <input type="button" class="btn btn-lg btn-primary btn-block" name="back" id="back" value="Register">
                     <div id="errors"></div>
                 </form>
                 <h3>&nbsp;</h3>

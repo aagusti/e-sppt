@@ -1,1 +1,38 @@
-<pad><sppt><tahun>1999</tahun><nop>61.10-100.003-006.0043-0</nop><alamat_op>alamat</alamat_op><rt_rw_op>rt-rw</rt_rw_op><desa_op>desa</desa_op><kec_op>kec</kec_op><kota_op>kota</kota_op><nama_wp>UDAK</nama_wp><alamat_wp>DSN BOTI</alamat_wp><rt_rw_wp> 000/00</rt_rw_wp><desa_wp>NANGA RAYA</desa_wp><kec_wp /><kota_wp>SINTANG</kota_wp><npwp>-</npwp><bumi_luas>20000.0</bumi_luas><bumi_kelas /><bumi_njop>200.0</bumi_njop><bumi_total>4000000.0</bumi_total><bng_luas>0.0</bng_luas><bng_kelas /><bng_njop>0</bng_njop><bng_total>0.0</bng_total><njop_dasar>4000000.0</njop_dasar><njoptkp>0</njoptkp><njop_pbb>4000000.0</njop_pbb><tarif>0.1%</tarif><pbb>4000.0</pbb><tgl_jatuhtempo>31-12-1998</tgl_jatuhtempo><tgl_terbit_sppt>01-04-1998</tgl_terbit_sppt><jabatan>jabatan</jabatan><kepala>kepala</kepala><nip>123456789</nip><logo>a</logo></sppt></pad>
+<pad>
+  <sppt>
+    <tahun>1999</tahun>
+    <nop>61.10-100.003-006.0043-0</nop>
+    <alamat_op>alamat</alamat_op>
+    <rt_rw_op>rt-rw</rt_rw_op>
+    <desa_op>desa</desa_op>
+    <kec_op>kec</kec_op>
+    <kota_op>kota</kota_op>
+    <nama_wp>UDAK</nama_wp>
+    <alamat_wp>DSN BOTI</alamat_wp>
+    <rt_rw_wp> 000/00</rt_rw_wp>
+    <desa_wp>NANGA RAYA</desa_wp>
+    <kec_wp /><kota_wp>SINTANG</kota_wp>
+    <npwp>-</npwp>
+    <bumi_luas>20000.0</bumi_luas>
+    <bumi_kelas>001</bumi_kelas>
+    <bumi_njop>200.0</bumi_njop>
+    <bumi_total>4000000.0</bumi_total>
+    <bng_luas>0.0</bng_luas>
+    <bng_kelas>001</bng_kelas>
+    <bng_njop>0</bng_njop>
+    <bng_total>0.0</bng_total>
+    <njop_dasar>4000000.0</njop_dasar>
+    <njoptkp>0</njoptkp>
+    <njop_pbb>4000000.0</njop_pbb>
+    <tarif>0.1%</tarif>
+    <pbb>4000.0</pbb>
+    <tgl_jatuhtempo>31-12-1998</tgl_jatuhtempo>
+    <tgl_terbit_sppt>01-04-1998</tgl_terbit_sppt>
+    <jabatan>jabatan</jabatan>
+    <kepala>kepala</kepala>
+    <nip>123456789</nip>
+    <logo>a</logo>
+    <tgl_proses>31-12-1998</tgl_proses>
+    <sequence>12321312312</sequence>
+  </sppt>
+</pad>

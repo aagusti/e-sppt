@@ -151,14 +151,23 @@
                   success: function (html) {
                       if (html.status == 1) {
                           $("#sukses").css('display', 'inline', 'important');
-                          nops = html.nop;
-                          $.each(nops, function(i,el) {
-                             nop = this;
-                             setTimeout(function(){
-                                  $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + nop);
-                                  $(el).animate(, 450);
-                            },5000);
-                         });
+// irul
+var durasi = 1000;
+$.each(html.nop, function(i, val){
+  setTimeout(function(){
+    $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + val).fadeIn(100).fadeOut(800);
+  }, durasi+(i*durasi));
+});
+
+//                          nops = html.nop;
+//                          $.each(nops, function(i,el) {
+//                             nop = this;
+//                             $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + nop)
+//                             setTimeout(function(){
+//                                  $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + nop);
+//                                  $(el).animate(, 450);
+//                            },5000);
+//                         });
                       
 
                           /*setTimeout(function () {  
@@ -173,12 +182,15 @@
                   },
                   beforeSend: function () {
                       $("#sukses").css('display', 'inline', 'important');
-                      $("#sukses").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                      $("#sukses").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...");
                   }
               });
+
+//TODO: nampilin setelah loop timeout
+//$("#sukses").html("<span class='glyphicon glyphicon-ok'></span> Finish.").fadeIn(200).fadeOut(1500);
+
                 return false;
               };
-          
         });
             
         });

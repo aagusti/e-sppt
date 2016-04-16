@@ -25,7 +25,10 @@ from pyjasper import (JasperGeneratorWithSubreport)
 import xml.etree.ElementTree as ET
 from pyramid.path import AssetResolver
 import PyPDF2
-from ..models.esppt_models import userModel
+
+from ..models.model_base import DBSession
+
+from ..models.esppt_models import userModel, esNopModel
 from ..models.imgw_models import *
 
 def get_logo():
@@ -39,6 +42,31 @@ def get_rpath(filename):
     resolver = a.resolve(''.join(['reports/',filename]))
     return resolver.abspath()
     
+def send_message():
+      q = DBSession.query(esNopModel).\
+              filter(or_(sms_sent==0, email_sent==0))
+      rows = q.all()
+      for row in rows:
+          id  = "".join([row.kd_propinsi, row.kd_dati2, row.kd_kecamatan, row.kd_kelurahan,
+                         row.kd_blok, row.no_urut, row.kd_jns_op])
+          thn = row.tahun
+          
+          if row.sms_sent==0:
+              penerima = row.es_register.no_hp
+              GenerateSms(id,thn,penerima)
+          
+          if row.email_sent==0:
+              userid = row.es_register.kode
+              penerima = row.es_register.email
+              
+              sppt_file = GenerateSppt(id,thn,userid)
+              antrian = antrianModel()
+              antrian.jalur = 1
+              antrian.penerima=penerima
+              antrian.pesan='SPPT '+id+' '+thn #dan seterusnya
+              OtherDBSession.add(antrian)
+              OtherDBSession.flush()
+              
 class GenerateSms():
     def __init__(self,id,thn,penerima):
         q = spptModel.get_by_nop_thn(id,thn).first()

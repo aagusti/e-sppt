@@ -113,6 +113,7 @@ class r001Generator(JasperGenerator):
             ET.SubElement(xml_greeting, "logo").text = get_logo()
             ET.SubElement(xml_greeting, "tgl_proses").text = row.tgl_proses.strftime('%d-%m-%Y')
             ET.SubElement(xml_greeting, "sequence").text = row.sequence
+            ET.SubElement(xml_greeting, "pbb_terhutang").text = unicode(row.pbb_terhutang_sppt)
         #print ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", logo
         print ET.tostring(self.root, encoding='utf8', method='xml')
         return self.root

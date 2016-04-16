@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1122"/>
+	<property name="ireport.y" value="0"/>
 	<queryString language="xPath">
 		<![CDATA[/pad/sppt]]>
 	</queryString>
@@ -110,6 +110,9 @@
 	</field>
 	<field name="sequence" class="java.lang.String">
 		<fieldDescription><![CDATA[sequence]]></fieldDescription>
+	</field>
+	<field name="pbb_terhutang" class="java.lang.String">
+		<fieldDescription><![CDATA[pbb_terhutang]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -407,7 +410,7 @@
 				<textElement textAlignment="Right" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{pbb}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{pbb_terhutang}))]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="208" y="216" width="21" height="15"/>
@@ -596,7 +599,7 @@
 				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{njop_pbb}))]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="286" y="369" width="266" height="15"/>
+				<reportElement x="283" y="404" width="266" height="15"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
@@ -617,7 +620,7 @@
 				<textFieldExpression><![CDATA[$F{tgl_jatuhtempo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="2" y="286" width="540" height="15"/>
+				<reportElement x="2" y="286" width="298" height="15"/>
 				<textElement markup="none">
 					<font isBold="true"/>
 				</textElement>
@@ -631,9 +634,9 @@
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="195" y="426" width="347" height="50"/>
+				<reportElement x="3" y="400" width="280" height="38"/>
 				<textElement markup="none">
-					<font isBold="false"/>
+					<font size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[TEMPAT PEMBAYARAN:
 PT. BANK JABAR BANTEN (TELLER , ATM DAN E-CHANNEL )
@@ -654,35 +657,35 @@ PT. BANK CENTRAL ASIA (ATM DAN E-CHANNEL)]]></text>
 				<textFieldExpression><![CDATA[$F{rt_rw_op}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="2" y="316" width="170" height="160"/>
+				<reportElement x="2" y="316" width="87" height="84"/>
 				<jr:DataMatrix xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
 					<jr:codeExpression><![CDATA[$F{nop}+$F{tahun}+$F{alamat_op}+$F{rt_rw_op}+$F{desa_op}+
 $F{kec_op}+$F{kota_op}+$F{pbb}]]></jr:codeExpression>
 				</jr:DataMatrix>
 			</componentElement>
 			<textField>
-				<reportElement x="284" y="301" width="266" height="15"/>
+				<reportElement x="283" y="336" width="266" height="15"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TANGERANG SELATAN, "+$F{tgl_terbit_sppt}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="286" y="385" width="266" height="15"/>
+				<reportElement x="283" y="420" width="266" height="15"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["NIP: 196109031991021001"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="286" y="338" width="266" height="15"/>
+				<reportElement x="283" y="373" width="266" height="15"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["TTD"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="286" y="316" width="266" height="15"/>
+				<reportElement x="283" y="351" width="266" height="15"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
@@ -713,67 +716,80 @@ $F{kec_op}+$F{kota_op}+$F{pbb}]]></jr:codeExpression>
 				<text><![CDATA[OBJEK PAJAK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="476" width="550" height="17"/>
+				<reportElement x="2" y="537" width="550" height="17"/>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[e-SPPT PBB-P2 BUKAN MERUPAKAN BUKTI KEPEMILIKAN HAK]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="498" width="549" height="96"/>
+				<reportElement x="3" y="438" width="549" height="64"/>
 				<textElement markup="none">
-					<font size="8" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Mengingat:
-Pasal 83 ayat (2) Peraturan Walikota Tangerang Selatan Nomor 16 Tahun 2012 tentang Tata Cara Pengelolaan Pajak Bumi dan Bangunan Perdesaan dan Perkotaan, menyatakan:
-“Pemerintah Daerah memberitahukan besarnya Pajak yang Terutang kepada Wajib Pajak melalui SPPT, atau dapat melalui media elektronik”
-
-Verifikasi e-SPPT ini dapat dilakukan melalui:
+				<text><![CDATA[Verifikasi e-SPPT ini dapat dilakukan melalui:
 1.  Hotline service 	: 021-5378391 (working hour)
 2.  SMS		: 0812 10 10 10 70
 3.  Email		: infopbb@tangerangselatankota.go.id]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="594" width="50" height="15"/>
+				<reportElement x="3" y="502" width="50" height="15"/>
 				<textElement markup="none">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Tgl proses]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="62" y="594" width="137" height="15"/>
+				<reportElement x="63" y="502" width="137" height="15"/>
 				<textElement markup="none">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{tgl_proses}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="52" y="594" width="10" height="15"/>
+				<reportElement x="53" y="502" width="10" height="15"/>
 				<textElement markup="none">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="609" width="50" height="15"/>
+				<reportElement x="3" y="517" width="50" height="15"/>
 				<textElement markup="none">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Serial]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="52" y="609" width="10" height="15"/>
+				<reportElement x="53" y="517" width="10" height="15"/>
 				<textElement markup="none">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="62" y="609" width="137" height="15"/>
+				<reportElement x="63" y="517" width="137" height="15"/>
 				<textElement markup="none">
 					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sequence}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="565" width="550" height="75"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Mengingat:
+Pasal 83 ayat (2) Peraturan Walikota Tangerang Selatan Nomor 16 Tahun 2012 tentang Tata Cara Pengelolaan Pajak Bumi dan Bangunan Perdesaan dan Perkotaan, menyatakan:
+“Pemerintah Daerah memberitahukan besarnya Pajak yang Terutang kepada Wajib Pajak melalui SPPT, atau dapat melalui media elektronik”
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="300" y="286" width="247" height="15"/>
+				<textElement textAlignment="Right" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance().getNumberInstance(Locale.ITALIAN).format(Double.parseDouble($F{pbb}))]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

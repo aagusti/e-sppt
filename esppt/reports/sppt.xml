@@ -31,8 +31,9 @@
     <jabatan>jabatan</jabatan>
     <kepala>kepala</kepala>
     <nip>123456789</nip>
-    <logo>a</logo>
+    <logo>z:\e-sppt\img</logo>
     <tgl_proses>31-12-1998</tgl_proses>
     <sequence>12321312312</sequence>
+    <pbb_terhutang>10000</pbb_terhutang>
   </sppt>
 </pad>

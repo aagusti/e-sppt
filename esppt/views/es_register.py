@@ -91,30 +91,7 @@ def form_reg_validator(form, value):
     if not q or q.tgl_pembayaran_sppt != value['nopschema']['tgl_bayar']:
         return err_psppt()
 
-def form_nop_validator(form, value):
-    def err_sppt():
-        raise colander.Invalid(form,
-                'SPPT %s %s nama %s tidak ditemukan' % (value['nop'], 
-                       value['tahun'], value['nm_wp']))
-                
-    def err_psppt():
-        raise colander.Invalid(form,
-                'PEMBAYARAN SPPT %s %s tidak valid' % (value['nop'], 
-                       value['tahun']))
-    
-    nop = re.sub("[^0-9]", "", value['nop'])
-    tahun = str(value['tahun'])
-    #CEK APAKAH DATA SPPT ADA???
-    q = spptModel.get_by_nop_thn(nop, tahun)
-    q = q.first()
-    if not q or q.nm_wp_sppt.strip() != value['nm_wp'].strip():
-        return err_sppt()
-        
-    #CEK PEMBAYARAN
-    q = pspptModel.get_by_nop_thn(nop, tahun)
-    q = q.first()
-    if not q or q.tgl_pembayaran_sppt != value['tgl_bayar']:
-        return err_psppt()
+
 
             
 class RegAddSchema(colander.Schema):
@@ -188,12 +165,6 @@ def get_form(request, class_form):
     schema.request = request
     return Form(schema, buttons=('register','batal'))
     
-def get_nop_form(request, class_form):
-    schema = class_form(validator=form_nop_validator)
-    schema = schema.bind()
-    schema.request = request
-    return Form(schema, buttons=('register','batal'))
-    
 def save_reg(values, row=None):
     if not row:
         row =esRegModel()
@@ -215,6 +186,9 @@ def save_nop(values, row=None):
     values['kd_blok']       = nop[10:13]
     values['no_urut']       = nop[13:17]
     values['kd_jns_op']     = nop[17:18]
+    values['sms_sent']      = 1
+    values['email_sent']    = 1
+    
     row.from_dict(values)
     DBSession.add(row)
     DBSession.flush()
@@ -251,19 +225,10 @@ def save_reg_request(values, request, row=None):
     row = save_nop(values,row)
     row=[]
     row = save_user(values,row)
-
-def save_nop_request(values, request, row=None):
-    if 'id' in request.matchdict:
-        values['id'] = request.matchdict['id']
-        
-    if  not 'es_reg_id' in values:
-        sid = esRegModel.get_by_nik(request.session['userid'])
-        if not sid:
-            return
-        values['es_reg_id'] = sid.id
-    row=[]
-    row = save_nop(values,row)
-                     
+ 
+def route_reg_list(request):
+    return HTTPFound(location=request.route_url('es_reg'))
+ 
 class espptRegister(BaseViews):
     @view_config(route_name='es_reg', renderer='templates/esppt/register.pt')
     def view_add(self):

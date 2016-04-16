@@ -23,6 +23,43 @@ from deform import (
     ValidationFailure,
     )
 from email.Utils import parseaddr, formataddr   
+                    
+from es_register import RegEditSchema     
+
+def form_prof_validator(form, value):
+    def err_nik():
+        raise colander.Invalid(form,
+                'NIK %s sudah ada yang menggunakan' % value['kode'])
+        
+    def err_email():
+        raise colander.Invalid(form,
+                'e-mail %s sudah ada yang menggunakan' % value['email'])
+    r = email_found(value['email'])      
+    if r :
+        if r.id!= ('id' in value and value['id'] or 0):
+            return err_email()
+
+def save_prof_request(values, request, row=None):
+    if 'id' in request.matchdict:
+        values['id'] = request.matchdict['id']
+    row = save_reg(values,row)
+    
+def route_reg_list(request):
+    return HTTPFound(location=request.route_url('es_reg'))
+    
+def route_nop_list(request):
+    return HTTPFound(location=request.route_url('es_home'))
+    
+def session_failed(request, session_name):
+    r = dict(form=request.session[session_name])
+    del request.session[session_name]
+    return r
+def get_prof_form(request, class_form):
+    schema = class_form(validator=form_prof_validator)
+    schema = schema.bind()
+    schema.request = request
+    return Form(schema, buttons=('register','batal'))    
+    
 
 class esHome(BaseViews):
     @view_config(route_name='es_home', renderer='templates/esppt/home.pt')

@@ -116,18 +116,7 @@ def form_nop_validator(form, value):
     if not q or q.tgl_pembayaran_sppt != value['tgl_bayar']:
         return err_psppt()
 
-def form_prof_validator(form, value):
-    def err_nik():
-        raise colander.Invalid(form,
-                'NIK %s sudah ada yang menggunakan' % value['kode'])
-        
-    def err_email():
-        raise colander.Invalid(form,
-                'e-mail %s sudah ada yang menggunakan' % value['email'])
-    r = email_found(value['email'])      
-    if r :
-        if r.id!= ('id' in value and value['id'] or 0):
-            return err_email()
+            
 class RegAddSchema(colander.Schema):
   kode        = colander.SchemaNode(
                     colander.String(),
@@ -205,12 +194,6 @@ def get_nop_form(request, class_form):
     schema.request = request
     return Form(schema, buttons=('register','batal'))
     
-def get_prof_form(request, class_form):
-    schema = class_form(validator=form_prof_validator)
-    schema = schema.bind()
-    schema.request = request
-    return Form(schema, buttons=('register','batal'))    
-    
 def save_reg(values, row=None):
     if not row:
         row =esRegModel()
@@ -280,23 +263,7 @@ def save_nop_request(values, request, row=None):
         values['es_reg_id'] = sid.id
     row=[]
     row = save_nop(values,row)
-    
-def save_prof_request(values, request, row=None):
-    if 'id' in request.matchdict:
-        values['id'] = request.matchdict['id']
-    row = save_reg(values,row)
-    
-def route_reg_list(request):
-    return HTTPFound(location=request.route_url('es_reg'))
-    
-def route_nop_list(request):
-    return HTTPFound(location=request.route_url('es_home'))
-    
-def session_failed(request, session_name):
-    r = dict(form=request.session[session_name])
-    del request.session[session_name]
-    return r
-                    
+                     
 class espptRegister(BaseViews):
     @view_config(route_name='es_reg', renderer='templates/esppt/register.pt')
     def view_add(self):

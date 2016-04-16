@@ -204,7 +204,7 @@ class GenerateSppt():
             input_stream = PyPDF2.PdfFileReader(open(sppt_file, "rb"))
             for i in range(0, input_stream.getNumPages()):
                 output.addPage(input_stream.getPage(i))
-            print '*DEBUG***', user_pass
+                
             outputStream = open(output_file, "wb")
          
             # Set user and owner password to pdf file

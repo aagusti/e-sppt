@@ -40,7 +40,7 @@
           "bScrollCollapse": true,
           "bSort": true,
           "bInfo": false,
-          "bFilter": false,
+          "bFilter": true,
           "bAutoWidth": false,
           "bPaginate": true,
           "sPaginationType": "full_numbers",

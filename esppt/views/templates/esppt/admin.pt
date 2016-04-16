@@ -1,6 +1,18 @@
 <html metal:use-macro="load: ../apptemplate.pt">
 
   <div metal:fill-slot="content">
+<style>      
+  #errors, #sukses {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 300px;
+    height: 50;
+}​
+</style>    
+  
     <script>
       var mID;
       var mThn;
@@ -54,7 +66,7 @@
           '<div class="btn-group pull-left">',
           '	<button id="btn_delete" class="btn btn btn-danger" type="button">Hapus</button>',
           '	<button id="btn_profile" name="btn_profile" class="btn btn-primary" type="button">Profile</button>',
-          '	<input type="text" id="txt_thn" name="txt_thn" class="" >',
+          '	<input type="text" id="txt_thn" name="txt_thn" class="" value="${tahun}">',
           '	<button id="btn_gen" name="btn_gen" class="btn btn-primary" type="button">Proses</button>',
           '	&nbsp;',
           '</div>',
@@ -98,8 +110,8 @@
                   data: "id=" + mID,
                   success: function (html) {
                       if (html.success == true) {
-                          $("#errors").css('display', 'inline', 'important');
-                          $("#errors").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                          $("#sukses").css('display', 'inline', 'important');
+                          $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
                           var oTable = $('#table1').dataTable();
                           oTable.fnDraw();
                           //TODO: Redraw after delete
@@ -109,8 +121,8 @@
                       }
                   },
                   beforeSend: function () {
-                      $("#errors").css('display', 'inline', 'important');
-                      $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                      $("#sukses").css('display', 'inline', 'important');
+                      $("#sukses").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
                   }
               });
                 return false;
@@ -121,6 +133,8 @@
         });
         
         //proses massal
+        /*function shownop(nops){
+        */
         $('#btn_gen').click(function () {
             var thn = $('#txt_thn').val();
             if (isNaN(thn) || thn==''){
@@ -136,17 +150,30 @@
                   //data: "id=" + mID,
                   success: function (html) {
                       if (html.status == 1) {
-                          $("#errors").css('display', 'inline', 'important');
-                          $("#errors").html("<span class='glyphicon glyphicon-ok'></span> " + html.message);
+                          $("#sukses").css('display', 'inline', 'important');
+                          nops = html.nop;
+                          $.each(nops, function(i,el) {
+                             nop = this;
+                             setTimeout(function(){
+                                  $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + nop);
+                                  $(el).animate(, 450);
+                            },5000);
+                         });
+                      
+
+                          /*setTimeout(function () {  
+                              $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
+                              }, 3000);
+                          */
                           //TODO: Redraw after delete
                       } else {
                           $("#errors").css('display', 'inline', 'important');
-                          $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.message);
+                          $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
                       }
                   },
                   beforeSend: function () {
-                      $("#errors").css('display', 'inline', 'important');
-                      $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
+                      $("#sukses").css('display', 'inline', 'important');
+                      $("#sukses").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
                   }
               });
                 return false;
@@ -159,7 +186,7 @@
     
     <div class="panel-body">
         <div class="page-header">
-            <h1>Daftar Registrasi SPPT</h1>
+            <h3>Daftar Registrasi SPPT</h3>
         </div>
         
         <div class="row">

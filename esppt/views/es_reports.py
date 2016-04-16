@@ -26,6 +26,8 @@ import xml.etree.ElementTree as ET
 from pyramid.path import AssetResolver
 import PyPDF2
 from ..models.esppt_models import userModel
+from ..models.imgw_models import *
+
 def get_logo():
     a = AssetResolver('esppt') 
     resolver = a.resolve(''.join(['static/images/','logo_rpt.png']))
@@ -37,6 +39,26 @@ def get_rpath(filename):
     resolver = a.resolve(''.join(['reports/',filename]))
     return resolver.abspath()
     
+class GenerateSms():
+    def __init__(self,id,thn,penerima):
+        q = spptModel.get_by_nop_thn(id,thn).first()
+        if q:
+           pesan = ''.join(['NOP:', id,' ',thn, ' NAMA:', q.nm_wp_sppt or '', \
+                        ' ALAMAT:',q.jln_wp_sppt or '', q.blok_kav_no_wp_sppt or '', \
+                        ' RT/RW:', q.rt_wp_sppt or '', '/',q.rw_wp_sppt or '', \
+                        ' KELURAHAN:', q.kelurahan_wp_sppt or '', \
+                        ' KOTA:', q.kota_wp_sppt or '', \
+                        ' NJOP:', '{0:,}'.format(q.njop_sppt) or '', \
+                        ' TERUTANG:', '{0:,}'.format(q.pbb_yg_harus_dibayar_sppt)  or ''])
+           antrian = antrianModel()
+           antrian.jalur = 1
+           antrian.penerima=penerima
+           antrian.pesan=pesan
+           OtherDBSession.add(antrian)
+           OtherDBSession.flush()
+           self.d['msg']=pesan
+           self.d['success']=True
+                   
 class r001Generator(JasperGenerator):
     """Jasper-Generator for Greetingcards"""
     def __init__(self):
@@ -95,11 +117,18 @@ class r001Generator(JasperGenerator):
         print ET.tostring(self.root, encoding='utf8', method='xml')
         return self.root
         
-class ViewSPPTLap(BaseViews):
-    def genarate_sppt(self,nop,thn,user_id):
+class GenerateSppt():
+    def __init__(self,nop,thn,user_id):
         _here = os.path.dirname(__file__)
         sppt_path  = os.path.join(os.path.dirname(_here), 'sppt')
         sppt_file  = '%s/%s%s.pdf' %(sppt_path,nop,thn) 
+        self.sppt_file = sppt_file
+        owner_pass='t4ngs3l'
+        user_pass='t4ngs3l'
+        users = userModel.get_by_user(user_id)
+        if users:
+            user_pass=users.passwd.encode('utf8') 
+            
         if not os.path.exists(sppt_file):
             q = DBSession.query(spptModel.kd_propinsi, spptModel.kd_dati2, spptModel.kd_kecamatan, 
                         spptModel.kd_kelurahan, spptModel.kd_blok, spptModel.no_urut, spptModel.kd_jns_op, 
@@ -132,7 +161,7 @@ class ViewSPPTLap(BaseViews):
             v_c1 = datetime.now().strftime('%d%m%Y%H%M%S')
             v_c2 = v_pbb_hrsbyr[:1];
             v_c3 = row.nm_wp_sppt[:1];
-            v_c4 = 'X' #row.kd_znt and row.znt[:1] or '0'
+            v_c4 = user_id[:1]
             v_c5 = row.nm_wp_sppt[-1:]
             v_c6 = str(len(v_pbb_hrsbyr) - 3)[:1]
             v_c7 = row.nm_wp_sppt[2:1]
@@ -168,26 +197,14 @@ class ViewSPPTLap(BaseViews):
                         spptModel.thn_pajak_sppt == thn)
                         
             generator = r001Generator()
-            pdf = generator.generate(query) #,sign_keyname='a', sign_reason='a', metadata='tangsel')
-            
-            owner_pass='t4ngs3l'
-            user_pass='t4ngs3l'
-            users = userModel.get_by_user(user_id)
-            if users:
-                user_pass=users.passwd.encode('utf8') 
-            # else:
-                # user_pass='t4ngs3l'
-            #print user_pass, owner_pass
+            pdf = generator.generate(query) 
             output_file ='%s.tmp' %sppt_file
-            
             open(sppt_file, 'w').write(pdf)
-            
             output = PyPDF2.PdfFileWriter()
             input_stream = PyPDF2.PdfFileReader(open(sppt_file, "rb"))
-
             for i in range(0, input_stream.getNumPages()):
                 output.addPage(input_stream.getPage(i))
-         
+            print '*DEBUG***', user_pass
             outputStream = open(output_file, "wb")
          
             # Set user and owner password to pdf file
@@ -198,8 +215,9 @@ class ViewSPPTLap(BaseViews):
             # Rename temporary output file with original filename, this
             # will automatically delete temporary file
             os.rename(output_file, sppt_file)
-        return sppt_file
-        
+            self.sppt_file = sppt_file
+     
+class ViewSPPTLap(BaseViews):
     @view_config(route_name="es_report_act")
     def es_report_act(self):
         if not self.logged :
@@ -215,13 +233,16 @@ class ViewSPPTLap(BaseViews):
             if pk_id:
                 nop = pk_id
                 thn = params['thn']
-                sppt_file = self.genarate_sppt(nop,thn,req.session['userid'])
-                pdf = open(sppt_file, 'r').read()
-                response=req.response
-                response.content_type="application/pdf"
-                response.content_disposition='filename=%s.pdf' %nop
-                response.write(pdf)
-                return response
+                sppt_file = GenerateSppt(nop,thn,req.session['userid']).sppt_file
+                if sppt_file:
+                    pdf = open(sppt_file, 'r').read()
+                    response=req.response
+                    response.content_type="application/pdf"
+                    response.content_disposition='filename=%s.pdf' %nop
+                    response.write(pdf)
+                    return response
+                else:
+                    return HTTPNotFound() 
         else:
             return HTTPNotFound() #TODO: Warning Hak Akses 
             
@@ -230,12 +251,12 @@ class ViewSPPTLap(BaseViews):
         req =  self.request
         url_dict = req.matchdict
         thn = url_dict['thn']
-        if int(float(thn)) != datetime.now().year:
-            thn = None
+        if not thn:
+            thn = datetime.now().year
    
         if not thn or req.session['userid']!='sa':
             json_data ={"status":0,
-                  "message":"Not Allowed"}
+                  "msg":"Not Allowed"}
             return json_data
         
         q = DBSession.query(esNopModel).join(esRegModel).\
@@ -243,18 +264,19 @@ class ViewSPPTLap(BaseViews):
                                esNopModel.kd_kelurahan,esNopModel.kd_blok,esNopModel.no_urut,
                                esNopModel.kd_jns_op)
         rows = q.all()
-        
+        nop=[]
         for row in rows:
-            nop = "".join([row.kd_propinsi,row.kd_dati2,row.kd_kecamatan,
-                             row.kd_kelurahan,row.kd_blok,row.no_urut,row.kd_jns_op]) 
-            sppt_file = self.genarate_sppt(nop,thn,row.es_register.kode)
+            nop.append("".join([row.kd_propinsi,row.kd_dati2,row.kd_kecamatan,
+                              row.kd_kelurahan,row.kd_blok,row.no_urut,row.kd_jns_op])) 
+            # sppt_file = self.genarate_sppt(nop,thn,row.es_register.kode)
             row.tahun = thn
             row.sms_sent = 0
             row.email_sent = 0
             DBSession.add(row)
-            DBSession.flush()
+
+        DBSession.flush()
             
-        json_data ={"status":1,
-                    "message":"Success"}
-        return json_data
+        return dict(status=1,
+             msg="Sukses masuk kedalam antrian",
+             nop=nop)
         

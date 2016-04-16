@@ -168,12 +168,12 @@
         var tb_array = [
             '<div class="btn-group pull-left">',
             '	<button id="btn_sppt" class="btn btn btn-primary" type="button">SPPT</button>',
-            '	<button id="btn_stts" class="btn btn btn-danger" type="button">STTS</button>',
             '	<button id="btn_email" name="btn_email" class="btn btn-primary" type="button">e-mail</button>',
             '	<button id="btn_sms" name="btn_sms" class="btn btn-primary" type="button">SMS</button>',
             '	&nbsp;',
             '</div>',
         ];
+        //'	<button id="btn_stts" class="btn btn btn-danger" type="button">STTS</button>',
     
         var tb = tb_array.join(' ');
         $("div.toolbar1").html(tb);
@@ -184,7 +184,6 @@
           } else {
             iPos = oTable2.fnGetPosition(this);
             var aData = oTable2.fnGetData(iPos);
-            //mID = aData[0];
             oTable2.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
             mThn = aData[0];
@@ -229,40 +228,11 @@
         /*******************************************************************
         * SPPT PDF
         *******************************************************************/
-  /*      $("#load_pdf").on("click",function(){
-            //swap url with a pdf file you have access to for testing
-            var url = "http://localhost/Responder Manual.pdf";
-            $.get(url,function(data){
-                   //open a new window note:this is a popup so it may be blocked by your browser
-                   var newWindow = window.open("", "new window", "width=200, height=100");
-                   //write the data to the document of the newWindow
-                   newWindow.document.write(data);
-            });
-          });
-*/
         $('#btn_sppt').click(function () {
           if (mID && mThn) {
             var url = "/esppt/report/sppt/act?id="+mID+'&thn='+mThn;
             window.open(url, "new window", "width=200, height=100");
-                   
-            
           }
-            /*    $.ajax({
-                    type: "POST",
-                    url: "/esppt/report/sppt/act",
-                    data: "id=" + mID+"&thn="+mThn,
-                    success: function (html) {
-                        var newWindow = window.open("", "SPPT", "width=200, height=100");
-                        newWindow.document.write(html);
-                    },
-                    beforeSend: function () {
-                        $("#errors").css('display', 'inline', 'important');
-                        $("#errors").html("<img src=\'${request.static_url('esppt:static/images/ajax-loader.gif')}\' /> Loading...")
-                    }
-                });
-          } else {
-                alert('Silahkan pilih data terlebih dahulu');
-          }*/
         });
         
         /*******************************************************************
@@ -274,7 +244,7 @@
             if (hapus == true) {
                 $.ajax({
                     type: "POST",
-                    url: "/esppt/sms/act",
+                    url: "/esppt/email/act",
                     data: "id=" + mID+"&thn="+mThn,
                     success: function (html) {
                       if (html.success == true) {

@@ -97,9 +97,11 @@
             <!-- /.navbar-collapse -->
         </div>
       <div>
+  
       <div class="alert alert-danger" style="display: none;" id='errors' width="100%"></div>
       <div class="alert alert-success" style="display: none;" id='sukses' width="100%"></div>
       </div>
+      
       <div tal:condition="request.session.peek_flash()">
         <div class="alert alert-success" tal:repeat="message request.session.pop_flash()">${message}</div>
       </div>
@@ -107,15 +109,15 @@
         <div class="alert alert-danger" tal:repeat="message request.session.pop_flash('error')">${message}</div>
       </div>
       
-        <div metal:define-slot="content" class="container"></div>
+      <div metal:define-slot="content" class="container"></div>
         
-        <summary>
-        </summary>
+      <summary>
+      </summary>
         
         <footer>
             <div class="container" style="position:fixed; bottom:0;">
                 <p class="muted credit" id="errors"></p>
-                <p class="muted credit"><strong><a href="http://opensipkd.com">&copy; OpenSIPKD 2014 </a></strong></p>
+                <p class="muted credit"><strong><a href="http://opensipkd.com">&copy; OpenSIPKD 2016 </a></strong></p>
             </div>
         </footer>
     </body>

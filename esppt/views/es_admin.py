@@ -36,7 +36,8 @@ class esAdmin(BaseViews):
 
         return dict(datas=self.datas,
                     rows = '', 
-                    sess=self.session) 
+                    sess=self.session,
+                    tahun=datetime.now().year) 
                     
     @view_config(route_name='es_admin_act', renderer='json')
     def es_admin_act(self):

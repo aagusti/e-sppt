@@ -33,7 +33,7 @@
         
       $(document).ready(function () {
         oTable = $('#table1').dataTable({
-          "sDom": '<"toolbar">',
+          "sDom": '<"toolbar">lfrtip',
           "sAjaxSource": oTableUrl,
           "bServerSide": true,
           "bProcessing": true,
@@ -141,7 +141,7 @@
                 alert('Tahun Bukan Numeric');
                 return
             }
-            
+            var n;
             var hapus = confirm('Proses data tahun '+thn+'?');
             if (hapus == true) {
               $.ajax({
@@ -151,8 +151,9 @@
                       if (html.status == 1) {
                           $("#sukses").css('display', 'inline', 'important');
                           // irul
-                          var durasi = 1000;
+                          var durasi = 500;
                           $.each(html.nop, function(i, val){
+                            n = i;
                             setTimeout(function(){
                               $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + val); //.fadeIn(100).fadeOut(800);
                             }, (i*durasi));
@@ -160,7 +161,7 @@
 
                           setTimeout(function (i) {  
                               $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
-                              }, i*durasi);
+                              }, (n+1)*durasi);
                       } else {
                           $("#errors").css('display', 'inline', 'important');
                           $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);

@@ -147,34 +147,20 @@
               $.ajax({
                   type: "GET",
                   url: "/esppt/generate/"+thn,
-                  //data: "id=" + mID,
                   success: function (html) {
                       if (html.status == 1) {
                           $("#sukses").css('display', 'inline', 'important');
-// irul
-var durasi = 1000;
-$.each(html.nop, function(i, val){
-  setTimeout(function(){
-    $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + val).fadeIn(100).fadeOut(800);
-  }, durasi+(i*durasi));
-});
+                          // irul
+                          var durasi = 1000;
+                          $.each(html.nop, function(i, val){
+                            setTimeout(function(){
+                              $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + val); //.fadeIn(100).fadeOut(800);
+                            }, (i*durasi));
+                          });
 
-//                          nops = html.nop;
-//                          $.each(nops, function(i,el) {
-//                             nop = this;
-//                             $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + nop)
-//                             setTimeout(function(){
-//                                  $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + nop);
-//                                  $(el).animate(, 450);
-//                            },5000);
-//                         });
-                      
-
-                          /*setTimeout(function () {  
+                          setTimeout(function (i) {  
                               $("#sukses").html("<span class='glyphicon glyphicon-ok'></span> " + html.msg);
-                              }, 3000);
-                          */
-                          //TODO: Redraw after delete
+                              }, i*durasi);
                       } else {
                           $("#errors").css('display', 'inline', 'important');
                           $("#errors").html("<span class='glyphicon glyphicon-remove'></span> " + html.msg);
@@ -186,10 +172,7 @@ $.each(html.nop, function(i, val){
                   }
               });
 
-//TODO: nampilin setelah loop timeout
-//$("#sukses").html("<span class='glyphicon glyphicon-ok'></span> Finish.").fadeIn(200).fadeOut(1500);
-
-                return false;
+              return false;
               };
         });
             

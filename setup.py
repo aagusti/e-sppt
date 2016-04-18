@@ -60,5 +60,6 @@ setup(name='esppt',
       main = esppt:main
       [console_scripts]
       initialize_esppt_db = esppt.scripts.initializedb:main
+      send_email = esppt.scripts.send_email:main
       """,
       )

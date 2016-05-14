@@ -25,12 +25,9 @@ from pyjasper import (JasperGeneratorWithSubreport)
 import xml.etree.ElementTree as ET
 from pyramid.path import AssetResolver
 import PyPDF2
-
-from ..models.model_base import DBSession
-
-from ..models.esppt_models import userModel, esNopModel
+from ..models.esppt_models import userModel
 from ..models.imgw_models import *
-
+from ..models.other_base import OtherDBSession
 def get_logo():
     a = AssetResolver('esppt') 
     resolver = a.resolve(''.join(['static/images/','logo_rpt.png']))
@@ -42,33 +39,10 @@ def get_rpath(filename):
     resolver = a.resolve(''.join(['reports/',filename]))
     return resolver.abspath()
     
-def send_message():
-      q = DBSession.query(esNopModel).\
-              filter(or_(sms_sent==0, email_sent==0))
-      rows = q.all()
-      for row in rows:
-          id  = "".join([row.kd_propinsi, row.kd_dati2, row.kd_kecamatan, row.kd_kelurahan,
-                         row.kd_blok, row.no_urut, row.kd_jns_op])
-          thn = row.tahun
-          
-          if row.sms_sent==0:
-              penerima = row.es_register.no_hp
-              GenerateSms(id,thn,penerima)
-          
-          if row.email_sent==0:
-              userid = row.es_register.kode
-              penerima = row.es_register.email
-              
-              sppt_file = GenerateSppt(id,thn,userid)
-              antrian = antrianModel()
-              antrian.jalur = 1
-              antrian.penerima=penerima
-              antrian.pesan='SPPT '+id+' '+thn #dan seterusnya
-              OtherDBSession.add(antrian)
-              OtherDBSession.flush()
-              
 class GenerateSms():
     def __init__(self,id,thn,penerima):
+        self.msg = ""
+        #self.d = []
         q = spptModel.get_by_nop_thn(id,thn).first()
         if q:
            pesan = ''.join(['NOP:', id,' ',thn, ' NAMA:', q.nm_wp_sppt or '', \
@@ -78,14 +52,16 @@ class GenerateSms():
                         ' KOTA:', q.kota_wp_sppt or '', \
                         ' NJOP:', '{0:,}'.format(q.njop_sppt) or '', \
                         ' TERUTANG:', '{0:,}'.format(q.pbb_yg_harus_dibayar_sppt)  or ''])
+           print pesan
+           self.msg = pesan
            antrian = antrianModel()
            antrian.jalur = 1
            antrian.penerima=penerima
            antrian.pesan=pesan
            OtherDBSession.add(antrian)
            OtherDBSession.flush()
-           self.d['msg']=pesan
-           self.d['success']=True
+           #self.d['msg']=pesan
+           #self.d['success']=True
                    
 class r001Generator(JasperGenerator):
     """Jasper-Generator for Greetingcards"""
@@ -121,17 +97,17 @@ class r001Generator(JasperGenerator):
             ET.SubElement(xml_greeting, "kota_wp").text = row.kota_wp_sppt
             ET.SubElement(xml_greeting, "npwp").text = row.npwp_sppt and row.npwp_sppt or '-'
             ET.SubElement(xml_greeting, "bumi_luas").text = unicode(row.luas_bumi_sppt)
-            ET.SubElement(xml_greeting, "bumi_kelas").text = '001' #unicode(row.bumi_kelas)
+            ET.SubElement(xml_greeting, "bumi_kelas").text = unicode(row.kd_kls_tanah)#'001' #unicode(row.bumi_kelas)
             ET.SubElement(xml_greeting, "bumi_njop").text = unicode(row.luas_bumi_sppt and row.njop_bumi_sppt/row.luas_bumi_sppt or 0)
             ET.SubElement(xml_greeting, "bumi_total").text = unicode(row.njop_bumi_sppt) 
             ET.SubElement(xml_greeting, "bng_luas").text = unicode(row.luas_bng_sppt)
-            ET.SubElement(xml_greeting, "bng_kelas").text = '001' #unicode(row.bng_kelas)
+            ET.SubElement(xml_greeting, "bng_kelas").text = unicode(row.kd_kls_bng)#'001' #unicode(row.bng_kelas)
             ET.SubElement(xml_greeting, "bng_njop").text = unicode(row.luas_bng_sppt and row.njop_bng_sppt/row.luas_bng_sppt or 0)
             ET.SubElement(xml_greeting, "bng_total").text = unicode(row.njop_bng_sppt)
             ET.SubElement(xml_greeting, "njop_dasar").text = unicode(row.njop_sppt)
             ET.SubElement(xml_greeting, "njoptkp").text = unicode(row.njoptkp_sppt)
             ET.SubElement(xml_greeting, "njop_pbb").text = unicode(row.njop_sppt-row.njoptkp_sppt)
-            ET.SubElement(xml_greeting, "tarif").text = '0.1%'
+            ET.SubElement(xml_greeting, "tarif").text = row.tarif #'0.1%'
             ET.SubElement(xml_greeting, "pbb").text = unicode(row.pbb_yg_harus_dibayar_sppt)
             ET.SubElement(xml_greeting, "tgl_jatuhtempo").text = row.tgl_jatuh_tempo_sppt.strftime('%d-%m-%Y')
             ET.SubElement(xml_greeting, "tgl_terbit_sppt").text = row.tgl_terbit_sppt.strftime('%d-%m-%Y')
@@ -208,7 +184,9 @@ class GenerateSppt():
                         spptModel.njoptkp_sppt, spptModel.pbb_terhutang_sppt, 
                         spptModel.pbb_yg_harus_dibayar_sppt, spptModel.tgl_terbit_sppt, 
                         dopModel.jalan_op, dopModel.blok_kav_no_op, dopModel.rw_op,dopModel.rt_op,
-                        kelurahanModel.nm_kelurahan, kecamatanModel.nm_kecamatan, dati2Model.nm_dati2,
+                        kelurahanModel.nm_kelurahan, kecamatanModel.nm_kecamatan, dati2Model.nm_dati2,                  
+                        #(func.coalesce(spptModel.njop_sppt,0)-func.coalesce(spptModel.njoptkp_sppt,0)).label("tarif"),
+                        case([(func.coalesce(spptModel.njop_sppt,0)-func.coalesce(spptModel.njoptkp_sppt,0)<1000000000,"0.1%")], else_="0.2%").label("tarif"),
                         literal_column("'%s'" %kode).label("sequence"),
                         func.current_timestamp().label("tgl_proses")).\
                     outerjoin(dopModel).\

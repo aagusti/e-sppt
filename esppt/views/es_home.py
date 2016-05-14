@@ -13,7 +13,7 @@ from datetime import (datetime, date)
 import os
 from pyramid.renderers import render_to_response
 from esppt.models.esppt_models import *
-
+from es_reports import GenerateSms
   
 import re
 import colander
@@ -235,12 +235,14 @@ class esHome(BaseViews):
                 q = esNopModel.get_by_nop(id).first()
                 if not q or q.es_register.kode != ses['userid']:
                     self.d['msg']='NOP bukan milik anda'
-
+                    return
+                
                 penerima = q.es_register.no_hp    
-                sms = GenerateSMS(penerima,id,thn)
+                sms = GenerateSms(id,thn,penerima)
                 if sms.msg:
-                    self.d = sms.msg
-                    
+                    self.d['msg'] = sms.msg
+                    self.d['status']=True
+
             return self.d            
                    
         elif url_dict['act'] == 'email':

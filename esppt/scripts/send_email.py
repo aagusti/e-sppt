@@ -68,6 +68,8 @@ def main(argv=sys.argv):
         nop = get_nop(r_nop)
         q = spptModel.get_by_nop_thn(nop, r_nop.tahun)
         sppt = q.first()
+        if not sppt:
+            continue
         nilai = thousand(sppt.pbb_yg_harus_dibayar_sppt)
         g = GenerateSppt(nop, r_nop.tahun, USER_ID)
         sppt_file = g.sppt_file

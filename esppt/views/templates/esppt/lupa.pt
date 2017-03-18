@@ -49,13 +49,16 @@
                         data: "email=" + email +"&lupa=lupa",
                         success: function (html) {
                             console.log(html);
+                            console.log(html.success);
+                            
                             if (html.success == true) {
                                 $("#errors").css('display', 'inline', 'important');
                                 $("#errors").html("<span style='display:block;padding:6px;margin-top:6px;' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> Password akan dikirim melalui e-mail atau no Handphone</span>");
-                                
+                                console.log('sukses');
                             } else {
                                 $("#errors").css('display', 'inline', 'important');
                                 $("#errors").html("<span style='display:block;padding:6px;margin-top:6px;' class='label label-danger'><span class='glyphicon glyphicon-remove'></span> User ID Email atau No. Handphone tidak ditemukan !</span>");
+                                console.log('false');
                             }
                         },
                         beforeSend: function () {

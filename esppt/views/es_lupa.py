@@ -79,6 +79,7 @@ class eslupa(BaseViews):
                 OtherDBSession.flush()
             
             if row.email:
+                antrian_id = antrian_seq()
                 a = antrianModel(id=antrian_id, kirim=True, jalur=6, 
                                  penerima=row.email, pesan=pesan)
                 

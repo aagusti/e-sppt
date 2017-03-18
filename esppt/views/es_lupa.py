@@ -16,7 +16,8 @@ import os
 from pyramid.renderers import render_to_response
 from esppt.models.esppt_models import *
 from esppt.models.imgw_models import *
-                      
+from esppt.models.model_base import DBSession
+from esppt.models.other_base import OtherDBSession
 import re
 import colander
 from deform import (

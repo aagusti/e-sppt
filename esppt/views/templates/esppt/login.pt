@@ -71,7 +71,10 @@
                     window.location = "/register";
                     return false;
                 });
-            });
+                $("#lupa").click(function () {
+                    window.location = "/lupa";
+                    return false;
+                });            });
         </script>
         
         <div class="panel-body">
@@ -90,6 +93,8 @@
                     </div>
                     <input type="submit" class="btn btn-lg btn-primary btn-block" name="login" id="login" value="Login">
                     <input type="button" class="btn btn-lg btn-primary btn-block" name="back" id="back" value="Register">
+                    <input type="button" class="btn btn-lg btn-primary btn-block" name="lupa" id="lupa" value="Lupa Password">
+ 
                     <div id="errors"></div>
                 </form>
                 <h3>&nbsp;</h3>

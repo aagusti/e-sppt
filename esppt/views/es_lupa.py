@@ -44,6 +44,61 @@ class eslupa(BaseViews):
     def login(self):
         request = self.request
         session = self.session
+        if request.POST:
+            email = request.POST['email']
+            row = DBSession.query(esRegModel).filter(
+                      or_(esRegModel.email == email,
+                          esRegModel.kode == email,
+                          esRegModel.no_hp == email
+                      )).first()
+                      
+            if not row:
+                return render_to_response ('json',
+                          dict(success=False))
+                          
+            datLogin = userModel.get_by_user(row.kode)
+            if not datLogin:
+                return render_to_response ('json',
+                          dict(success=False))
+                          
+            if datLogin.passwd != row.password:
+               row.passwd = datLogin.passwd
+               DBSession.add(row)
+               DBSession.flush()
+            
+            pesan = 'Password Login e-sppt Kota Tangerang Selatan Anda %s' % datLogin.passwd
+            
+            if row.no_hp:
+                self.msg = pesan
+                antrian = antrianModel()
+                antrian.jalur = 1
+                antrian.penerima = row.no_hp
+                antrian.pesan = pesan
+                OtherDBSession.add(antrian)
+                OtherDBSession.flush()
+            
+            if row.email:
+                from ..models.imgw_models import (
+                      antrian_seq,
+                      antrianModel,
+                      mailModel,
+                      mailFileModel,
+                      )
+                a = antrianModel(id=antrian_id, kirim=True, jalur=6, 
+                                 penerima=row.email, pesan=pesan)
+                
+                a.pengirim = "pbb@tangselkota.org"
+                subject = "Password untuk %s " % email 
+                mail = mailModel(id=antrian_id, subject=subject, name=name)
+                OtherDBSession.add(mail)
+                OtherDBSession.add(a)
+                OtherDBSession.flush()
+            
+            return render_to_response ('json',
+                      dict(success=True))
+           
+             
+            
         self.datas['title']="Silahkan Masukan userid/email/handphone"
         self.datas['judul']=''
 

@@ -104,8 +104,9 @@ class esHome(BaseViews):
     @view_config(route_name='es_home', renderer='templates/esppt/home.pt')
     def es_home(self):
         ses = self.session
-        if not 'logged' in ses or   not ses['logged']:
+        if not 'logged' in ses or  not ses['logged']:
             url = self.request.resource_url(self.context, '')
+            print url
             return HTTPFound(location=url, headers=None)
 
         return dict(datas=self.datas,

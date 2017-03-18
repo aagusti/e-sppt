@@ -16,7 +16,7 @@ import os
 from pyramid.renderers import render_to_response
 from esppt.models.esppt_models import *
 from esppt.models.imgw_models import *
-  
+                      
 import re
 import colander
 from deform import (
@@ -24,7 +24,7 @@ from deform import (
     widget,
     ValidationFailure,
     )
-from email.Utils import parseaddr, formataddr   
+from email.Utils import parseaddr, formataddr 
 def get_logged(request):
     session = request.session
     if 'logged' in session:
@@ -78,12 +78,6 @@ class eslupa(BaseViews):
                 OtherDBSession.flush()
             
             if row.email:
-                from ..models.imgw_models import (
-                      antrian_seq,
-                      antrianModel,
-                      mailModel,
-                      mailFileModel,
-                      )
                 a = antrianModel(id=antrian_id, kirim=True, jalur=6, 
                                  penerima=row.email, pesan=pesan)
                 

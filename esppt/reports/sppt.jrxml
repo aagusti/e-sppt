@@ -164,7 +164,7 @@
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[DINAS PENDAPATAN, PENGELOLAAN KEUANGAN DAN ASET DAERAH]]></text>
+				<text><![CDATA[BADAN PENDAPATAN DAERAH]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="69" y="43" width="486" height="15"/>
@@ -603,7 +603,7 @@
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["UUS KUSNADI, SE.M.Si"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Drs. H. DADANG SOFYAN, MM"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="301" width="112" height="15"/>
@@ -640,7 +640,8 @@
 				</textElement>
 				<text><![CDATA[TEMPAT PEMBAYARAN:
 PT. BANK JABAR BANTEN (TELLER , ATM DAN E-CHANNEL )
-PT. BANK CENTRAL ASIA (ATM DAN E-CHANNEL)]]></text>
+PT. BANK CENTRAL ASIA (ATM DAN E-CHANNEL)
+PT. BANK MANDIRI (TELLER , ATM DAN E-CHANNEL )]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="360" y="49" width="195" height="15"/>
@@ -675,7 +676,7 @@ $F{kec_op}+$F{kota_op}+$F{pbb}]]></jr:codeExpression>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["NIP: 196109031991021001"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["NIP: 19610124 198603 1 006"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="283" y="373" width="266" height="15"/>
@@ -689,7 +690,7 @@ $F{kec_op}+$F{kota_op}+$F{pbb}]]></jr:codeExpression>
 				<textElement textAlignment="Center" markup="none">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["KEPALA DPPKAD"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["KEPALA BADAN PENDAPATAN DAERAH"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="2" y="640" width="555" height="16"/>

@@ -51,7 +51,9 @@ class eslogin(BaseViews):
 
         #cek apakah session sedang login kalau ya langsung di redirect ke home
         if 'logged' in session and session['logged']:
-            return self.home()
+            HTTPFound(request.route_url("es_home"))
+            #return self.home()
+
         return dict(datas = self.datas,
                     rows = ())
 

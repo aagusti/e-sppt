@@ -24,7 +24,7 @@ from deform import (
     )
 from email.Utils import parseaddr, formataddr   
                     
-from es_register import RegEditSchema, NopAddSchema, save_nop     
+from es_register import RegEditSchema, NopAddSchema, save_nop, email_found, save_reg 
 def form_nop_validator(form, value):
     def err_sppt():
         raise colander.Invalid(form,

@@ -71,7 +71,8 @@ def main(argv=sys.argv):
         if not sppt:
             continue
         nilai = thousand(sppt.pbb_yg_harus_dibayar_sppt)
-        g = GenerateSppt(nop, r_nop.tahun, USER_ID)
+        g = GenerateSppt(nop, r_nop.tahun, r_reg.kode) 
+        #USER_ID) updated menggunakan password dari user yang ada di reg.kode aagusti
         sppt_file = g.sppt_file
         e_filename = os.path.split(sppt_file)[-1]
         f = open(sppt_file)

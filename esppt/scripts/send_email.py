@@ -3,7 +3,6 @@ import os
 #os.environ['PYJASPER_SERVLET_URL'] = 'http://localhost:5555/pyJasper/jasper.py'
 import base64
 import locale
-locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
 import transaction
 from sqlalchemy import engine_from_config
 from pyramid.paster import (
@@ -19,7 +18,12 @@ from ..models.other_base import (
     OtherDBSession,
     OtherBase,
     )
+settings = get_appsettings
+#localization = 'localization' in settings and settings['localization'] or 'id_ID.UTF-8'
+localization = 'id_ID.UTF-8'
+#localization = 'Indonesian_indonesia.1252'
 
+locale.setlocale(locale.LC_ALL, localization)
 USER_ID = 'sa'
 EMAIL_SUBJECT = 'SPPT {nop} {tahun}'
 EMAIL_BODY = """Bapak / Ibu {nama_wp} yth,

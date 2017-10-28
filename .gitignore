@@ -44,3 +44,4 @@ logo.png
 logo_rpt.png
 *.pdf
 local.ini
+env/

@@ -53,6 +53,7 @@ def main(global_config, **settings):
     config.add_route('login_it', '/login_it')
     config.add_route('logout', '/logout')
     config.add_route('lupa', '/lupa')
+    config.add_route('change', '/change')
 
     add_route(config, esppt_route)
  
